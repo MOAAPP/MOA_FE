@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="목표 모음 선택"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="40dp" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="2"
+        android:useDefaultMargins="true">
+
+        <Button
+            android:id="@+id/btn_vowel_a"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:text="ㅏ"
+            android:textSize="32sp"
+            android:layout_margin="8dp" />
+
+        <Button
+            android:id="@+id/btn_vowel_eo"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:text="ㅓ"
+            android:textSize="32sp"
+            android:layout_margin="8dp" />
+
+        <Button
+            android:id="@+id/btn_vowel_o"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:text="ㅗ"
+            android:textSize="32sp"
+            android:layout_margin="8dp" />
+
+        <Button
+            android:id="@+id/btn_vowel_u"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:text="ㅜ"
+            android:textSize="32sp"
+            android:layout_margin="8dp" />
+
+        <Button
+            android:id="@+id/btn_vowel_eu"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:text="ㅡ"
+            android:textSize="32sp"
+            android:layout_margin="8dp" />
+
+        <Button
+            android:id="@+id/btn_vowel_i"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:text="ㅣ"
+            android:textSize="32sp"
+            android:layout_margin="8dp" />
+
+    </GridLayout>
+
+</LinearLayout>
