@@ -1,0 +1,102 @@
+.splash-page {
+    background: var(--color-primary-default);
+  }
+  
+  .splash-background {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-background);
+    pointer-events: none;
+  }
+  
+  .splash-puzzle {
+    position: absolute;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+    object-fit: contain;
+  }
+  
+  /* 퍼즐 위치 */
+  .splash-puzzle-top-left {
+    width: 140.177px;
+    height: auto;
+    top: 0;
+    left: 0;
+  }
+  
+  .splash-puzzle-top-right {
+    width: 140px;
+    height: auto;
+    top: 0;
+    right: 0;
+  }
+  
+  .splash-puzzle-bottom-left {
+    width: 243px;
+    height: auto;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .splash-puzzle-bottom-right {
+    width: 220px;
+    height: auto;
+    right: 0;
+    bottom: 100px;
+  }
+  
+  /* 로고 이미지 */
+  .splash-logo {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    z-index: var(--z-content);
+    transform: translateX(-50%);
+    margin: 0;
+  }
+  
+  .splash-logo-image {
+    display: block;
+    width: 400px;
+    height: auto;
+  }
+  
+  /* MOA 텍스트 */
+  .splash-brand-text {
+    position: absolute;
+    top: 370px;
+    left: 50%;
+    z-index: var(--z-content);
+    transform: translateX(-50%);
+  
+    color: var(--blue-200);
+    text-align: center;
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+  }
+  
+  /* 설명 문구 */
+  .splash-title {
+    position: absolute;
+    top: 470px;
+    left: 0;
+    right: 0;
+    z-index: var(--z-content);
+  
+    color: var(--blue-50);
+    text-align: center;
+  }
+  
+  .splash-title p {
+    margin: 0;
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 32px;
+    letter-spacing: -0.32px;
+  }

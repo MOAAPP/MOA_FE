@@ -1,0 +1,17 @@
+.mobile-screen-wrapper {
+    width: 100%;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: var(--color-background-default);
+  }
+  
+  .mobile-screen {
+    position: relative;
+    width: var(--mobile-screen-width);
+    height: var(--mobile-screen-height);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--color-background-elevated);
+  }

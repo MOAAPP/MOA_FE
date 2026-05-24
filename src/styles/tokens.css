@@ -1,0 +1,83 @@
+:root {
+    /* Device / Design Screen */
+    --mobile-screen-width: 412px;
+    --mobile-screen-height: 917px;
+  
+    /* Blue */
+    --blue-50: #f7f9ff;
+    --blue-100: #e6ecff;
+    --blue-200: #d5dfff;
+    --blue-300: #b3c6ff;
+    --blue-400: #91adff;
+    --blue-500: #5681ff;
+    --blue-600: #4d73e3;
+    --blue-700: #4567cc;
+    --blue-800: #3a58ad;
+    --blue-900: #2f478c;
+    --blue-950: #273a73;
+  
+    /* Gray */
+    --gray-50: #f8f8f9;
+    --gray-100: #e9eaec;
+    --gray-200: #dadcdf;
+    --gray-300: #bcc0c6;
+    --gray-400: #9fa3ac;
+    --gray-500: #6b7280;
+    --gray-600: #626976;
+    --gray-700: #565b66;
+    --gray-800: #494e57;
+    --gray-900: #3b3f46;
+    --gray-950: #30333a;
+  
+    /* Primary */
+    --color-primary-default: var(--blue-500);
+    --color-primary-hover: var(--blue-600);
+    --color-primary-active: var(--blue-700);
+    --color-primary-subtle: var(--blue-100);
+  
+    /* Background */
+    --color-background-default: var(--blue-50);
+    --color-background-elevated: #ffffff;
+    --color-background-subtle: var(--blue-100);
+  
+    /* Text */
+    --color-text-primary: var(--gray-900);
+    --color-text-secondary: var(--gray-600);
+    --color-text-disabled: var(--gray-400);
+    --color-text-inverse: #ffffff;
+  
+    /* Border */
+    --color-border-default: var(--gray-200);
+    --color-border-subtle: var(--gray-100);
+    --color-border-strong: var(--gray-400);
+  
+    /* Success */
+    --color-success-default: #22c55e;
+    --color-success-subtle: #dcfce7;
+  
+    /* Warning */
+    --color-warning-default: #f59e0b;
+    --color-warning-subtle: #fef3c7;
+  
+    /* Error */
+    --color-error-default: #ef4444;
+    --color-error-subtle: #fee2e2;
+  
+    /* Info */
+    --color-info-default: #38bdf8;
+    --color-info-subtle: #e0f2fe;
+  
+    /* Radius */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 999px;
+  
+    /* Z-index */
+    --z-background: 1;
+    --z-content: 10;
+    --z-header: 50;
+    --z-modal: 100;
+  }
