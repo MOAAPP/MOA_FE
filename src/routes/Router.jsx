@@ -1,7 +1,7 @@
-import OnboardingPage from "../pages/onboarding/OnboardingPage";
+import RecordPage from "../pages/record/RecordPage";
 
 function Router() {
-  return <OnboardingPage />;
+  return <RecordPage />;
 }
 
 export default Router;
