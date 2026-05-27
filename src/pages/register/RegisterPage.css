@@ -1,0 +1,22 @@
+.register-page {
+  background: var(--color-background-default);
+  display: flex;
+  flex-direction: column;
+}
+
+.register-scroll {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.register-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 하단 네비를 absolute에서 static으로 전환 */
+.register-page .bottom-nav {
+  position: static;
+  padding: 12px 17px 40px;
+  flex-shrink: 0;
+}

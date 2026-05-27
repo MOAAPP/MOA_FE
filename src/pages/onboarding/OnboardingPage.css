@@ -8,14 +8,18 @@
   
   .onboarding-text h1 {
     margin: 0;
-  
+
     color: var(--blue-950);
     font-family: Pretendard;
     font-size: 26px;
     font-style: normal;
     font-weight: 700;
-    line-height: 36px; 
+    line-height: 36px;
     letter-spacing: -0.32px;
+  }
+
+  .onboarding-highlight {
+    color: var(--color-primary-default);
   }
   
   .onboarding-text p {
@@ -36,7 +40,7 @@
   }
   
   .onboarding-visual {
-    width: 236px;
+    width: 320px;
     height: auto;
     display: block;
   }

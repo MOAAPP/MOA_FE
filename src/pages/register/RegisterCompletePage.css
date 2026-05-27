@@ -1,0 +1,76 @@
+.complete-page {
+  background: var(--color-background-default);
+}
+
+/* 배경 퍼즐 */
+.complete-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-background);
+}
+
+.complete-puzzle {
+  position: absolute;
+}
+
+.complete-puzzle-tr {
+  width: 220px;
+  top: -10px;
+  right: -10px;
+  opacity: 0.55;
+}
+
+.complete-puzzle-bl {
+  width: 270px;
+  bottom: -20px;
+  left: -30px;
+  opacity: 0.55;
+}
+
+/* 중앙 콘텐츠 */
+.complete-center {
+  position: absolute;
+  top: 42%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: var(--z-content);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.complete-logo {
+  width: 160px;
+  height: auto;
+}
+
+.complete-brand {
+  margin: 16px 0 0;
+  color: var(--color-primary-default);
+  font-family: Pretendard, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.32px;
+}
+
+.complete-message {
+  margin: 48px 0 0;
+  color: var(--blue-950);
+  font-family: Pretendard, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: -0.32px;
+}
+
+/* 하단 버튼 */
+.complete-bottom {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 40px;
+  z-index: var(--z-content);
+}

@@ -1,0 +1,136 @@
+.login-page {
+  background: var(--color-background-default);
+}
+
+.login-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 60px 24px 0;
+}
+
+.login-header-text {
+  flex: 1;
+}
+
+.login-greeting {
+  margin: 0 0 4px;
+  color: var(--color-text-secondary);
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+}
+
+.login-title {
+  margin: 0;
+  color: var(--blue-950);
+  font-family: Pretendard, sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: -0.32px;
+}
+
+.login-logo {
+  width: 80px;
+  height: auto;
+  flex-shrink: 0;
+  margin-left: 12px;
+  margin-top: -8px;
+}
+
+.login-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 160px 24px 0;
+}
+
+.login-eye-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--gray-400);
+  display: flex;
+  align-items: center;
+}
+
+.login-keep {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 24px 0;
+  cursor: pointer;
+}
+
+.login-keep-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-primary-default);
+  cursor: pointer;
+}
+
+.login-keep-label {
+  color: var(--color-text-primary);
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+}
+
+.login-bg-puzzles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.login-puzzle {
+  position: absolute;
+  opacity: 0.18;
+}
+
+.login-puzzle-left {
+  width: 200px;
+  bottom: 80px;
+  left: -20px;
+}
+
+.login-puzzle-right {
+  width: 180px;
+  bottom: 60px;
+  right: -20px;
+}
+
+.login-bottom {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 40px;
+  z-index: var(--z-content);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.login-signup-link {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: Pretendard, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.32px;
+}
+
+.login-signup-anchor {
+  color: var(--color-primary-default);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

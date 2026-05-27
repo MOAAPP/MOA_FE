@@ -1,11 +1,19 @@
-.app-button {
-  width: 100%;
+.bottom-nav {
+  position: absolute;
+  left: 17px;
+  right: 17px;
+  bottom: 40px;
+  display: flex;
+  gap: 12px;
+}
+
+.bottom-nav-btn {
+  flex: 1;
   height: 50px;
   border: none;
   border-radius: var(--radius-md);
   font-family: Pretendard, sans-serif;
   font-size: 20px;
-  font-style: normal;
   font-weight: 600;
   line-height: 30px;
   letter-spacing: -0.32px;
@@ -13,22 +21,17 @@
   transition: opacity 0.15s;
 }
 
-.app-button:disabled {
+.bottom-nav-btn:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
-.app-button--primary {
-  background: var(--color-primary-default);
-  color: var(--color-text-inverse);
-}
-
-.app-button--secondary {
+.bottom-nav-prev {
   background: var(--blue-100);
   color: var(--color-text-primary);
 }
 
-.app-button--ghost {
-  background: transparent;
-  color: var(--color-primary-default);
+.bottom-nav-next {
+  background: var(--color-primary-default);
+  color: var(--color-text-inverse);
 }
