@@ -3,22 +3,52 @@ import arrowLeft from "../../assets/images/record/left_side.svg";
 import arrowRight from "../../assets/images/record/right_side.svg";
 import "./RecordPage.css";
 
+function getCalendarDays(year, month) {
+  const firstDay = new Date(year, month - 1, 1);
+  const lastDate = new Date(year, month, 0).getDate();
+
+  const startDay = firstDay.getDay();
+  const mondayStartIndex = startDay === 0 ? 6 : startDay - 1;
+
+  const days = [];
+
+  for (let i = 0; i < mondayStartIndex; i++) {
+    days.push(null);
+  }
+
+  for (let date = 1; date <= lastDate; date++) {
+    days.push(date);
+  }
+
+  while (days.length % 7 !== 0) {
+    days.push(null);
+  }
+
+  return days;
+}
+
 function RecordPage() {
+  const year = 2026;
+  const month = 6;
+  const calendarDays = getCalendarDays(year, month);
+
   return (
     <MobileScreen className="record-page">
       <section className="record-calendar-card">
         <div className="record-calendar-header">
           <div>
-            <h2>2026년 5월</h2>
+            <h2>
+              {year}년 {month}월
+            </h2>
             <p>오늘의 학습으로 퍼즐을 완성해보세요</p>
           </div>
 
           <div className="record-month-buttons">
             <button type="button" aria-label="이전 달">
-                <img src={arrowLeft} alt="" />
+              <img src={arrowLeft} alt="" />
             </button>
             <button type="button" aria-label="다음 달">
-                <img src={arrowRight} alt="" />
+              <img src={arrowRight} alt="" />
             </button>
           </div>
         </div>
@@ -35,9 +65,13 @@ function RecordPage() {
 
         <div className="record-calendar-area">
           <div className="record-calendar-grid">
-            {Array.from({ length: 35 }).map((_, index) => (
+            {calendarDays.map((day, index) => (
               <div className="record-date-cell" key={index}>
-                <span>{index + 1}</span>
+                {day && (
+                  <span className="record-day-number">
+                    <span className="record-day-text">{day}</span>
+                  </span>
+                )}
               </div>
             ))}
           </div>

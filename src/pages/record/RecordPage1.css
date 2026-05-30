@@ -1,0 +1,60 @@
+.record-calendar-area {
+  width: calc(100% + 36px);
+  height: 327px;
+  margin-top: 8px;
+  margin-left: -18px;
+  margin-right: -18px;
+
+  overflow: hidden;
+  background: #e5eaff;
+}
+
+.record-calendar-grid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(var(--calendar-rows), 1fr);
+}
+
+.record-date-cell {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+
+  background-repeat: no-repeat;
+}
+
+/* 획득한 퍼즐 조각 */
+.record-date-cell.is-acquired {
+  background-color: #000;
+}
+
+/* 아직 못 얻은 날짜 */
+.record-date-cell.is-locked {
+  background: rgba(210, 218, 245, 0.78);
+}
+
+/* 날짜 없는 빈 칸 */
+.record-date-cell.is-empty {
+  background: rgba(230, 236, 255, 0.9);
+}
+
+.record-lock-icon {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+
+  font-size: 17px;
+  opacity: 0.55;
+}
+
+.record-empty-piece {
+  position: absolute;
+  inset: 0;
+  background: rgba(210, 218, 245, 0.55);
+}

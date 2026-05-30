@@ -1,4 +1,4 @@
-import RecordPage from "../pages/record/RecordPage";
+import RecordPage from "../pages/record/RecordPage2";
 
 function Router() {
   return <RecordPage />;
