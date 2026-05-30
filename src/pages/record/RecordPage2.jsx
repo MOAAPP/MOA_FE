@@ -4,6 +4,7 @@ import arrowLeft from "../../assets/images/record/left_side.svg";
 import arrowRight from "../../assets/images/record/right_side.svg";
 import allPuzzle from "../../assets/images/record/all_Puzzle.png";
 import lockImage from "../../assets/images/record/lock.png";
+import otherImage from "../../assets/images/record/other.png";
 import "./RecordPage2.css";
 
 const YEAR = 2026;
@@ -229,8 +230,9 @@ function RecordPage() {
     (cell) => getCellStatus(YEAR, month, cell.day, today) === "open"
   ).length;
 
-  const progressPercent =
-    totalDays === 0 ? 0 : (openedCount / totalDays) * 100;
+    const displayOpenedCount = 16;
+    const displayTotalCount = 31;
+    const progressPercent = (displayOpenedCount / displayTotalCount) * 100;
 
   const handlePrevMonth = () => {
     setMonth((prev) => (prev === 5 ? 7 : prev - 1));
@@ -343,20 +345,24 @@ function RecordPage() {
               }
 
               return (
-                <path
-                  key={`empty-${cell.index}`}
-                  d={makePuzzleCellPath(
-                    cell.row,
-                    cell.col,
-                    cellW,
-                    cellH,
-                    rows,
-                    verticalEdges,
-                    horizontalEdges
-                  )}
-                  fill="#e5eaff"
-                />
-              );
+                <g key={`empty-${cell.index}`} clipPath={clipId}>
+                    <rect
+                    x={x - 8}
+                    y={y - 8}
+                    width={cellW + 16}
+                    height={cellH + 16}
+                    fill="#e5eaff"
+                    />
+                    <image
+                    href={otherImage}
+                    x={x - 8}
+                    y={y - 8}
+                    width={cellW + 16}
+                    height={cellH + 16}
+                    preserveAspectRatio="xMidYMid slice"
+                    />
+                </g>
+                );
             })}
 
             {/* 세로 퍼즐 경계선 */}
@@ -421,25 +427,27 @@ function RecordPage() {
 
               return (
                 <g key={`date-${cell.index}`}>
-                  <circle
-                    cx={x + 10}
-                    cy={y + 10}
-                    r="9"
-                    fill="#dbe4ff"
-                    stroke="#ffffff"
+                  <ellipse
+                    cx={x + 9}
+                    cy={y + 12}
+                    rx="7.0045"
+                    ry="6.9688"
+                    fill="#d5dfff"
+                    stroke="#f7f9ff"
                     strokeWidth="1"
-                  />
-                  <text
-                    x={x + 10}
-                    y={y + 10.5}
+                />
+                <text
+                    x={x + 9}
+                    y={y + 12.5}
                     textAnchor="middle"
                     dominantBaseline="middle"
                     fontSize="10"
-                    fontWeight="600"
+                    fontWeight="400"
                     fill="#3b3f46"
-                  >
+                    fontFamily="Pretendard"
+                    >
                     {cell.day}
-                  </text>
+                </text>
                 </g>
               );
             })}
@@ -454,7 +462,7 @@ function RecordPage() {
             />
           </div>
           <span>
-            {openedCount}/{totalDays} 획득
+            {displayOpenedCount}/{displayTotalCount} 획득
           </span>
         </div>
       </section>

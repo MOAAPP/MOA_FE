@@ -12,11 +12,11 @@
 /* 상단 기록 카드 */
 .record-calendar-card {
   width: 376.245px;
-  min-height: 447px;
+  height: 447px;
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
-  padding: 23px 18px 16px;
+  padding: 19.91px 18px 16px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -97,6 +97,8 @@
 }
 
 .record-week-row span {
+  width: 11.976px;
+  height: 15.929px;
   justify-self: center;
 
   color: #000;
@@ -129,29 +131,43 @@
 .record-progress-row {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin-top: 13px;
+
+  width: 355.289px;
+  margin-top: 15.28px;
+  margin-left: -7.02px;
+
+  gap: 5.99px;
 }
 
 .record-progress-bar {
-  flex: 1;
-  height: 8px;
-  border-radius: 999px;
-  background: #dce2ff;
+  width: 291.415px;
+  height: 9.955px;
+  border-radius: 12px;
+  background: #d5dfff;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .record-progress-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: #7184ff;
+  height: 9.955px;
+  border-radius: 12px;
+  background: #5681ff;
 }
 
 .record-progress-row span {
-  color: #5266e8;
+  display: flex;
+  width: 57.884px;
+  height: 15.929px;
+  flex-direction: column;
+  justify-content: center;
 
+  color: #4567cc;
   font-family: Pretendard;
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+
   white-space: nowrap;
+  flex-shrink: 0;
 }
