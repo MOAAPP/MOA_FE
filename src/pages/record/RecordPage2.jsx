@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import MobileScreen from "../../components/layout/MobileScreen";
+import PuzzleSummaryCard from "../../components/record/PuzzleSummaryCard";
+
 import arrowLeft from "../../assets/images/record/left_side.svg";
 import arrowRight from "../../assets/images/record/right_side.svg";
 import allPuzzle from "../../assets/images/record/all_Puzzle.png";
@@ -230,9 +232,14 @@ function RecordPage() {
     (cell) => getCellStatus(YEAR, month, cell.day, today) === "open"
   ).length;
 
-    const displayOpenedCount = 16;
-    const displayTotalCount = 31;
-    const progressPercent = (displayOpenedCount / displayTotalCount) * 100;
+  // const learnedCount = openedCount;
+  // const totalCount = totalDays;
+
+  const learnedCount = 16;
+  const totalCount = 31;
+  const emptyCount = totalCount - learnedCount;
+  const completionRate = Math.round((learnedCount / totalCount) * 100);
+  const progressPercent = completionRate;
 
   const handlePrevMonth = () => {
     setMonth((prev) => (prev === 5 ? 7 : prev - 1));
@@ -462,10 +469,17 @@ function RecordPage() {
             />
           </div>
           <span>
-            {displayOpenedCount}/{displayTotalCount} 획득
+            {learnedCount}/{totalCount} 획득
           </span>
         </div>
       </section>
+
+    <div className="record-summary-row">
+      <PuzzleSummaryCard label="학습한 조각" value={`${learnedCount}일`} />
+      <PuzzleSummaryCard label="빈 조각" value={`${emptyCount}개`} />
+      <PuzzleSummaryCard label="완성률" value={`${completionRate}%`} />
+    </div>
+
     </MobileScreen>
   );
 }

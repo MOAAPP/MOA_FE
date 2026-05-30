@@ -171,3 +171,14 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
+/* 요약 카드 영역 */
+.record-summary-row {
+  width: 376.245px;
+  margin-top: 23px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
