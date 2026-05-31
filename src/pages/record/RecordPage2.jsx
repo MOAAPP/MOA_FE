@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import MobileScreen from "../../components/layout/MobileScreen";
 import PuzzleSummaryCard from "../../components/record/PuzzleSummaryCard";
+import TodayPuzzleCard from "../../components/record/TodayPuzzleCard";
 
 import arrowLeft from "../../assets/images/record/left_side.svg";
 import arrowRight from "../../assets/images/record/right_side.svg";
@@ -479,6 +480,9 @@ function RecordPage() {
       <PuzzleSummaryCard label="빈 조각" value={`${emptyCount}개`} />
       <PuzzleSummaryCard label="완성률" value={`${completionRate}%`} />
     </div>
+
+
+    <TodayPuzzleCard />
 
     </MobileScreen>
   );

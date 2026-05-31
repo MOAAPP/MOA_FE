@@ -1,12 +1,17 @@
 .record-page {
   background: #f4f5fb;
-  padding-top: 50px;
+  padding-top: 24px;
   padding-bottom: 100px;
   box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  height: auto;
+  min-height: var(--mobile-screen-height);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* 상단 기록 카드 */
