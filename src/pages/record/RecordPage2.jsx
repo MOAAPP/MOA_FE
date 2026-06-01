@@ -534,10 +534,9 @@ const handleNextMonth = () => {
                 </g>
               );
             })}
+
             {/* 날짜 클릭 영역 */}
             {calendarCells.map((cell) => {
-              if (!cell.day) return null;
-
               const path = makePuzzleCellPath(
                 cell.row,
                 cell.col,
@@ -555,6 +554,13 @@ const handleNextMonth = () => {
                   fill="transparent"
                   style={{ cursor: "pointer" }}
                   onClick={() => {
+                    if (!cell.day) {
+                      setSelectedPuzzle({
+                        status: "other",
+                      });
+                      return;
+                    }
+
                     const status = getCellStatus(YEAR, month, cell.day, today, learnedDays);
 
                     setSelectedPuzzle({

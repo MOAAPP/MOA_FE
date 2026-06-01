@@ -107,3 +107,63 @@ aspect-ratio: 1/1;
   box-sizing: border-box;
   cursor: pointer;
 }
+
+.today-puzzle-card.is-other {
+  width: 377px;
+  height: 104px;
+  border-radius: 16px;
+  border: 1px dashed #5681ff;
+  box-sizing: border-box;
+
+  margin-top: 20px;
+  padding: 9px 20px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  background: transparent;
+}
+
+.today-puzzle-other-content {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.today-puzzle-other-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.today-puzzle-other-text h3 {
+  margin: 0;
+
+  color: #273a73;
+  font-family: Pretendard;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.32px;
+  white-space: nowrap;
+}
+
+.today-puzzle-other-figure {
+  width: 99px;
+  height: 99px;
+  flex-shrink: 0;
+}
+
+.today-puzzle-other-figure img {
+  width: 99px;
+  height: 99px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  display: block;
+  margin-left: 0;
+}

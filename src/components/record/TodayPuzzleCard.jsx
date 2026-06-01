@@ -1,4 +1,5 @@
 import calendarIcon from "../../assets/images/record/ci_calendar.svg";
+import otherGuideImage from "../../assets/images/record/otherimg.png";
 import "./TodayPuzzleCard.css";
 
 function TodayPuzzleCard({ selectedPuzzle }) {
@@ -8,15 +9,36 @@ function TodayPuzzleCard({ selectedPuzzle }) {
 
   const month = selectedPuzzle?.month;
   const day = selectedPuzzle?.day;
+
+  const displayMonth = hasSelectedPuzzle ? month : today.getMonth() + 1;
+  const displayDay = hasSelectedPuzzle ? day : today.getDate();
   
   //상태 확인
   const status = selectedPuzzle?.status;
   const isLocked = status === "locked";
   const isMissed = status === "missed";
   const isLearned = status === "learned";
+  const isOther = status === "other";
 
-  const displayMonth = hasSelectedPuzzle ? month : today.getMonth() + 1;
-  const displayDay = hasSelectedPuzzle ? day : today.getDate();
+  if (isOther) {
+    return (
+      <section className="today-puzzle-card is-other">
+        <div className="today-puzzle-other-content">
+          <div className="today-puzzle-other-text">
+            <h3>
+              모든 퍼즐을 모으면
+              <br />
+              마지막 조각이 완성돼요
+            </h3>
+          </div>
+
+          <div className="today-puzzle-other-figure">
+            <img src={otherGuideImage} alt="" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
