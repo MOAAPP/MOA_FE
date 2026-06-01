@@ -9,6 +9,7 @@ function TodayPuzzleCard({ selectedPuzzle }) {
   const month = selectedPuzzle?.month;
   const day = selectedPuzzle?.day;
   
+  //상태 확인
   const status = selectedPuzzle?.status;
   const isLocked = status === "locked";
   const isMissed = status === "missed";
@@ -38,6 +39,15 @@ function TodayPuzzleCard({ selectedPuzzle }) {
             <h3>아직 열리지 않은 퍼즐이에요</h3>
             <p>해당 날짜가 되면 조각을 채울 수 있어요</p>
           </>
+        ) : isMissed ? (
+          <>
+            <h3>놓친 조각</h3>
+            <p>
+              이 날은 학습하지 않아 조각을 얻지 못했어요.
+              <br />
+              풍선을 사용하면 이 조각을 다시 얻을 수 있어요.
+            </p>
+          </>
         ) : isLearned ? (
           <>
             <h3>학습한 조각이에요</h3>
@@ -57,7 +67,11 @@ function TodayPuzzleCard({ selectedPuzzle }) {
 
       {!isLocked && (
         <button type="button" className="today-puzzle-button">
-          {isLearned ? "기록 보기" : "오늘 채우기"}
+          {isMissed
+            ? "풍선 100개로 복구하기"
+            : isLearned
+            ? "기록 보기"
+            : "오늘 채우기"}
         </button>
       )}
     </section>

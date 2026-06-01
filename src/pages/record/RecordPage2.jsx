@@ -18,6 +18,9 @@ const YEAR = 2026;
 const COLS = 7;
 
 const MONTH_DATA = {
+  // 4: {
+  //   puzzleImage: allPuzzle,
+  // },
   5: {
     puzzleImage: allPuzzle,
   },
@@ -222,7 +225,8 @@ function makePuzzleCellPath(
 function RecordPage() {
   //학습한 날짜 데이터(mvp > 프가 관리)
   const learnedDaysByMonth = {
-    5: [5, 6, 8, 10, 12, 15, 18, 20, 22, 24, 26, 27, 29, 30, 31],
+    5: [1,3,5],
+    //5: [5, 6, 8, 10, 12, 15, 18, 20, 22, 24, 26, 27, 29, 30, 31],
     6: [],
     7: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
   };
@@ -377,20 +381,31 @@ const handleNextMonth = () => {
                 return (
                   <g key={`missed-${cell.index}`} clipPath={clipId}>
                     <rect
-                      x={x - 8}
+                      x={x - 10}
                       y={y - 8}
-                      width={cellW + 16}
+                      width={cellW + 20}
                       height={cellH + 16}
-                      fill="#e5eaff"
+                      fill="lightgray"
                     />
 
                     <image
                       href={reviveImage}
-                      x={x + 3}
-                      y={y + 3}
-                      width={cellW - 6}
-                      height={cellH - 6}
-                      preserveAspectRatio="xMidYMid meet"
+                      x={x - 10}
+                      y={y - 8}
+                      width={cellW + 20}
+                      height={cellH + 16}
+                      preserveAspectRatio="xMidYMid slice"
+                      opacity="0.92"
+                    />
+
+                    {/* 회색 블러 오버레이 */}
+                    <rect
+                      x={x - 10}
+                      y={y - 8}
+                      width={cellW + 20}
+                      height={cellH + 16}
+                      fill="#273a73"
+                      opacity="0.10"
                     />
 
                     <text
