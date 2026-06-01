@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import MobileScreen from "../../components/layout/MobileScreen";
 import PuzzleSummaryCard from "../../components/record/PuzzleSummaryCard";
 import TodayPuzzleCard from "../../components/record/TodayPuzzleCard";
+import MonthCompleteBanner from "../../components/record/MonthCompleteBanner";
 
 import arrowLeft from "../../assets/images/record/left_side.svg";
 import arrowRight from "../../assets/images/record/right_side.svg";
@@ -225,7 +226,7 @@ function makePuzzleCellPath(
 function RecordPage() {
   //학습한 날짜 데이터(mvp > 프가 관리)
   const learnedDaysByMonth = {
-    5: [1,3,5],
+    5: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
     //5: [5, 6, 8, 10, 12, 15, 18, 20, 22, 24, 26, 27, 29, 30, 31],
     6: [],
     7: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
@@ -262,6 +263,8 @@ function RecordPage() {
   const emptyCount = totalCount - learnedCount;
   const completionRate = Math.round((learnedCount / totalCount) * 100);
   const progressPercent = completionRate;
+
+  const isMonthCompleted = learnedCount === totalCount;
 
   const handlePrevMonth = () => {
   setSelectedPuzzle(null);
@@ -595,6 +598,7 @@ const handleNextMonth = () => {
       <PuzzleSummaryCard label="완성률" value={`${completionRate}%`} />
     </div>
 
+    {isMonthCompleted && <MonthCompleteBanner month={month} />}
 
     <TodayPuzzleCard selectedPuzzle={selectedPuzzle} />
 
