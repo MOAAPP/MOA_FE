@@ -8,6 +8,10 @@ import arrowRight from "../../assets/images/record/right_side.svg";
 import allPuzzle from "../../assets/images/record/all_Puzzle.png";
 import lockImage from "../../assets/images/record/lock.png";
 import otherImage from "../../assets/images/record/other.png";
+import reviveImage1 from "../../assets/images/record/rivive1.png"
+import reviveImage2 from "../../assets/images/record/rivive2.png"
+import reviveImage3 from "../../assets/images/record/rivive3.png"
+
 import "./RecordPage2.css";
 
 const YEAR = 2026;
@@ -24,6 +28,12 @@ const MONTH_DATA = {
     puzzleImage: allPuzzle,
   },
 };
+
+const REVIVE_IMAGES = [reviveImage1, reviveImage2, reviveImage3];
+
+function getReviveImage(day) {
+  return REVIVE_IMAGES[day % REVIVE_IMAGES.length];
+}
 
 function getCalendarCells(year, month) {
   const firstDay = new Date(year, month - 1, 1);
@@ -63,8 +73,12 @@ function compareYearMonth(yearA, monthA, yearB, monthB) {
   return monthA - monthB;
 }
 
-function getCellStatus(year, month, day, today) {
+function getCellStatus(year, month, day, today, learnedDays) {
   if (!day) return "empty";
+
+  if (learnedDays.includes(day)) {
+    return "learned";
+  }
 
   const todayYear = today.getFullYear();
   const todayMonth = today.getMonth() + 1;
@@ -72,12 +86,12 @@ function getCellStatus(year, month, day, today) {
 
   const compare = compareYearMonth(year, month, todayYear, todayMonth);
 
-  if (compare < 0) return "open";
-  if (compare > 0) return "locked";
+  if (compare > 0) return "locked"; // 미래 달
+  if (compare < 0) return "missed"; // 지난 달인데 학습 안 함
 
-  return day <= todayDate ? "open" : "locked";
+  if (day > todayDate) return "locked"; // 아직 안 온 날짜
+  return "missed"; // 오늘 포함, 날짜는 됐는데 학습 안 함
 }
-
 /**
  * 모든 조각이 서로 맞물리도록
  * 세로/가로 경계 방향을 한 번만 정해두는 함수
@@ -206,6 +220,13 @@ function makePuzzleCellPath(
 }
 
 function RecordPage() {
+  //학습한 날짜 데이터(mvp > 프가 관리)
+  const learnedDaysByMonth = {
+    5: [5, 6, 8, 10, 12, 15, 18, 20, 22, 24, 26, 27, 29, 30, 31],
+    6: [],
+    7: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+  };
+
   const [month, setMonth] = useState(6);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
 
@@ -230,15 +251,10 @@ function RecordPage() {
   // 테스트용으로 날짜 고정하고 싶으면 위 today 대신
   // const today = new Date(2026, 5, 16); // 2026년 6월 16일
 
-  const openedCount = calendarCells.filter(
-    (cell) => getCellStatus(YEAR, month, cell.day, today) === "open"
-  ).length;
+  const learnedDays = learnedDaysByMonth[month] ?? [];
 
-  // const learnedCount = openedCount;
-  // const totalCount = totalDays;
-
-  const learnedCount = 16;
-  const totalCount = 31;
+  const learnedCount = learnedDays.length;
+  const totalCount = totalDays;
   const emptyCount = totalCount - learnedCount;
   const completionRate = Math.round((learnedCount / totalCount) * 100);
   const progressPercent = completionRate;
@@ -313,15 +329,15 @@ const handleNextMonth = () => {
 
             {/* 각 칸 내용 */}
             {calendarCells.map((cell) => {
-              const status = getCellStatus(YEAR, month, cell.day, today);
+              const status = getCellStatus(YEAR, month, cell.day, today, learnedDays);
               const x = cell.col * cellW;
               const y = cell.row * cellH;
               const clipId = `url(#cell-clip-${month}-${cell.index})`;
 
-              if (status === "open") {
+              if (status === "learned") {
                 return (
                   <image
-                    key={`open-${cell.index}`}
+                    key={`learned-${cell.index}`}
                     href={monthData.puzzleImage}
                     x="0"
                     y="0"
@@ -355,25 +371,66 @@ const handleNextMonth = () => {
                 );
               }
 
+              if (status === "missed") {
+                const reviveImage = getReviveImage(cell.day);
+
+                return (
+                  <g key={`missed-${cell.index}`} clipPath={clipId}>
+                    <rect
+                      x={x - 8}
+                      y={y - 8}
+                      width={cellW + 16}
+                      height={cellH + 16}
+                      fill="#e5eaff"
+                    />
+
+                    <image
+                      href={reviveImage}
+                      x={x + 3}
+                      y={y + 3}
+                      width={cellW - 6}
+                      height={cellH - 6}
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+
+                    <text
+                      x={x + cellW / 2}
+                      y={y + cellH - 10}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fontSize="8"
+                      fontWeight="400"
+                      fontFamily="Pretendard"
+                      fill="#000"
+                      stroke="#f7f9ff"
+                      strokeWidth="1"
+                      paintOrder="stroke"
+                    >
+                      되살리기
+                    </text>
+                  </g>
+                );
+              }
+
               return (
                 <g key={`empty-${cell.index}`} clipPath={clipId}>
-                    <rect
+                  <rect
                     x={x - 8}
                     y={y - 8}
                     width={cellW + 16}
                     height={cellH + 16}
                     fill="#e5eaff"
-                    />
-                    <image
+                  />
+                  <image
                     href={otherImage}
                     x={x - 8}
                     y={y - 8}
                     width={cellW + 16}
                     height={cellH + 16}
                     preserveAspectRatio="xMidYMid slice"
-                    />
+                  />
                 </g>
-                );
+              );
             })}
 
             {/* 세로 퍼즐 경계선 */}
@@ -483,7 +540,7 @@ const handleNextMonth = () => {
                   fill="transparent"
                   style={{ cursor: "pointer" }}
                   onClick={() => {
-                    const status = getCellStatus(YEAR, month, cell.day, today);
+                    const status = getCellStatus(YEAR, month, cell.day, today, learnedDays);
 
                     setSelectedPuzzle({
                       year: YEAR,
