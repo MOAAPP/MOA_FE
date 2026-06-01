@@ -1,0 +1,60 @@
+import calendarIcon from "../../assets/images/record/ci_calendar.svg";
+import "./TodayPuzzleCard.css";
+
+function TodayPuzzleCard({ selectedPuzzle }) {
+  const hasSelectedPuzzle = selectedPuzzle !== null;
+
+  const today = new Date();
+
+  const month = selectedPuzzle?.month;
+  const day = selectedPuzzle?.day;
+  const status = selectedPuzzle?.status;
+
+  const displayMonth = hasSelectedPuzzle ? month : today.getMonth() + 1;
+  const displayDay = hasSelectedPuzzle ? day : today.getDate();
+
+  const isLocked = status === "locked";
+
+  return (
+    <section
+      className={`today-puzzle-card ${isLocked ? "is-locked" : "is-open"}`}
+    >
+      <div className="today-puzzle-date-badge">
+        <img
+          className="today-puzzle-calendar-icon"
+          src={calendarIcon}
+          alt=""
+        />
+        <span>
+          {displayMonth}월 {displayDay}일
+        </span>
+      </div>
+
+      <div className="today-puzzle-content">
+        {isLocked ? (
+          <>
+            <h3>아직 열리지 않은 퍼즐이에요</h3>
+            <p>해당 날짜가 되면 조각을 채울 수 있어요</p>
+          </>
+        ) : (
+          <>
+            <h3>오늘 채울 수 있는 조각</h3>
+            <p>
+              아직 학습하지 않았어요
+              <br />
+              지금 학습하면 퍼즐이 채워져요
+            </p>
+          </>
+        )}
+      </div>
+
+      {!isLocked && (
+        <button type="button" className="today-puzzle-button">
+          오늘 채우기
+        </button>
+      )}
+    </section>
+  );
+}
+
+export default TodayPuzzleCard;

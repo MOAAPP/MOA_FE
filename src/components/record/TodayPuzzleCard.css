@@ -1,0 +1,109 @@
+.today-puzzle-card {
+  width: 377px;
+  border-radius: 16px;
+  border: 1px dashed #5681ff;
+  box-sizing: border-box;
+
+  margin-top: 20px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.today-puzzle-card.is-open {
+  height: 249px;
+}
+
+.today-puzzle-card.is-locked {
+  height: 155px;
+}
+
+.today-puzzle-date-badge {
+  display: inline-flex;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  border-radius: 12px;
+  background: #b3c6ff;
+
+  width: fit-content;
+  box-sizing: border-box;
+}
+
+.today-puzzle-date-badge span {
+    color: var(--Blue-700, #4567CC);
+
+    /* Label/M */
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 160% */
+    letter-spacing: -0.32px;
+}
+
+.today-puzzle-calendar-icon {
+  width: 24px;
+height: 24px;
+aspect-ratio: 1/1;
+}
+
+.today-puzzle-content {
+  margin-top: 20px;
+}
+
+.today-puzzle-content h3 {
+  margin: 0;
+
+  color: #273a73;
+  font-family: Pretendard;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.32px;
+}
+
+.today-puzzle-content p {
+  margin: 7px 0 0;
+
+  color: #273a73;
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+}
+
+.today-puzzle-button {
+  margin-top: 20px;
+
+  display: flex;
+  width: 333px;
+  height: 50px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: center;
+
+  border: 0;
+  border-radius: 12px;
+  background: #5681ff;
+
+  color: #fff;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: -0.32px;
+
+  box-sizing: border-box;
+  cursor: pointer;
+}
