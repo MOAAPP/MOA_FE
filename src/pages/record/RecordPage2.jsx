@@ -207,6 +207,7 @@ function makePuzzleCellPath(
 
 function RecordPage() {
   const [month, setMonth] = useState(6);
+  const [selectedPuzzle, setSelectedPuzzle] = useState(null);
 
   const monthData = MONTH_DATA[month];
   const calendarCells = useMemo(() => getCalendarCells(YEAR, month), [month]);
@@ -243,12 +244,14 @@ function RecordPage() {
   const progressPercent = completionRate;
 
   const handlePrevMonth = () => {
-    setMonth((prev) => (prev === 5 ? 7 : prev - 1));
-  };
+  setSelectedPuzzle(null);
+  setMonth((prev) => (prev === 5 ? 7 : prev - 1));
+};
 
-  const handleNextMonth = () => {
-    setMonth((prev) => (prev === 7 ? 5 : prev + 1));
-  };
+const handleNextMonth = () => {
+  setSelectedPuzzle(null);
+  setMonth((prev) => (prev === 7 ? 5 : prev + 1));
+};
 
   return (
     <MobileScreen className="record-page">
@@ -459,6 +462,39 @@ function RecordPage() {
                 </g>
               );
             })}
+            {/* 날짜 클릭 영역 */}
+            {calendarCells.map((cell) => {
+              if (!cell.day) return null;
+
+              const path = makePuzzleCellPath(
+                cell.row,
+                cell.col,
+                cellW,
+                cellH,
+                rows,
+                verticalEdges,
+                horizontalEdges
+              );
+
+              return (
+                <path
+                  key={`click-${cell.index}`}
+                  d={path}
+                  fill="transparent"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    const status = getCellStatus(YEAR, month, cell.day, today);
+
+                    setSelectedPuzzle({
+                      year: YEAR,
+                      month,
+                      day: cell.day,
+                      status,
+                    });
+                  }}
+                />
+              );
+            })}
           </svg>
         </div>
 
@@ -482,7 +518,7 @@ function RecordPage() {
     </div>
 
 
-    <TodayPuzzleCard />
+    <TodayPuzzleCard selectedPuzzle={selectedPuzzle} />
 
     </MobileScreen>
   );

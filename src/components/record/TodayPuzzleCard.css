@@ -1,6 +1,5 @@
 .today-puzzle-card {
   width: 377px;
-  height: 249px;
   border-radius: 16px;
   border: 1px dashed #5681ff;
   box-sizing: border-box;
@@ -10,6 +9,14 @@
 
   display: flex;
   flex-direction: column;
+}
+
+.today-puzzle-card.is-open {
+  height: 249px;
+}
+
+.today-puzzle-card.is-locked {
+  height: 155px;
 }
 
 .today-puzzle-date-badge {
