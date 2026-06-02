@@ -12,6 +12,7 @@ import otherImage from "../../assets/images/record/other.png";
 import reviveImage1 from "../../assets/images/record/rivive1.png"
 import reviveImage2 from "../../assets/images/record/rivive2.png"
 import reviveImage3 from "../../assets/images/record/rivive3.png"
+import balloonIcon from "../../assets/images/record/balloon.svg";
 
 import "./RecordPage2.css";
 
@@ -93,8 +94,10 @@ function getCellStatus(year, month, day, today, learnedDays) {
   if (compare > 0) return "locked"; // 미래 달
   if (compare < 0) return "missed"; // 지난 달인데 학습 안 함
 
-  if (day > todayDate) return "locked"; // 아직 안 온 날짜
-  return "missed"; // 오늘 포함, 날짜는 됐는데 학습 안 함
+  //같은 달
+  if (day > todayDate) return "locked"; // 오늘 이후
+  if (day == todayDate) return "today"; // 오늘인데 아직 학습 안 함
+  return "missed"; // 오늘 이전 날짜인데 학습 안 함
 }
 /**
  * 모든 조각이 서로 맞물리도록
@@ -266,6 +269,23 @@ function RecordPage() {
 
   const isMonthCompleted = learnedCount === totalCount;
 
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth() + 1;
+  const todayDate = today.getDate();
+
+  const isViewingTodayMonth = YEAR === todayYear && month === todayMonth;
+
+  const defaultPuzzle = isViewingTodayMonth
+    ? {
+        year: YEAR,
+        month,
+        day: todayDate,
+        status: getCellStatus(YEAR, month, todayDate, today, learnedDays),
+      }
+    : null;
+
+  const activePuzzle = selectedPuzzle ?? defaultPuzzle;
+
   const handlePrevMonth = () => {
   setSelectedPuzzle(null);
   setMonth((prev) => (prev === 5 ? 7 : prev - 1));
@@ -356,7 +376,7 @@ const handleNextMonth = () => {
                 );
               }
 
-              if (status === "locked") {
+              if (status === "locked" || status === "today") {
                 return (
                   <g key={`locked-${cell.index}`} clipPath={clipId}>
                     <rect
@@ -380,6 +400,10 @@ const handleNextMonth = () => {
 
               if (status === "missed") {
                 const reviveImage = getReviveImage(cell.day);
+
+                const labelY = y + cellH - 10;
+                const iconX = x + cellW / 2 - 23;
+                const textX = x + cellW / 2 + 2;
 
                 return (
                   <g key={`missed-${cell.index}`} clipPath={clipId}>
@@ -411,21 +435,30 @@ const handleNextMonth = () => {
                       opacity="0.10"
                     />
 
-                    <text
-                      x={x + cellW / 2}
-                      y={y + cellH - 10}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fontSize="8"
-                      fontWeight="400"
-                      fontFamily="Pretendard"
-                      fill="#000"
-                      stroke="#f7f9ff"
-                      strokeWidth="1"
-                      paintOrder="stroke"
-                    >
-                      되살리기
-                    </text>
+                   <image
+                      href={balloonIcon}
+                      x={iconX}
+                      y={labelY - 8}
+                      width={13}
+                      height={14}
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+
+                  <text
+                    x={textX}
+                    y={labelY}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize="8"
+                    fontWeight="400"
+                    fontFamily="Pretendard"
+                    fill="#000"
+                    stroke="#f7f9ff"
+                    strokeWidth="1"
+                    paintOrder="stroke"
+                  >
+                    되살리기
+                  </text>
                   </g>
                 );
               }
@@ -600,7 +633,7 @@ const handleNextMonth = () => {
 
     {isMonthCompleted && <MonthCompleteBanner month={month} />}
 
-    <TodayPuzzleCard selectedPuzzle={selectedPuzzle} />
+    <TodayPuzzleCard selectedPuzzle={activePuzzle} />
 
     </MobileScreen>
   );

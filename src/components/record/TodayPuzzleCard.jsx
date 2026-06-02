@@ -1,5 +1,6 @@
 import calendarIcon from "../../assets/images/record/ci_calendar.svg";
 import otherGuideImage from "../../assets/images/record/otherimg.png";
+import LearningRecordCard from "./LearningRecordCard";
 import "./TodayPuzzleCard.css";
 
 function TodayPuzzleCard({ selectedPuzzle }) {
@@ -9,16 +10,17 @@ function TodayPuzzleCard({ selectedPuzzle }) {
 
   const month = selectedPuzzle?.month;
   const day = selectedPuzzle?.day;
+  const status = selectedPuzzle?.status;
 
   const displayMonth = hasSelectedPuzzle ? month : today.getMonth() + 1;
   const displayDay = hasSelectedPuzzle ? day : today.getDate();
   
   //상태 확인
-  const status = selectedPuzzle?.status;
   const isLocked = status === "locked";
   const isMissed = status === "missed";
   const isLearned = status === "learned";
   const isOther = status === "other";
+  const isToday = status === "today";
 
   if (isOther) {
     return (
@@ -37,6 +39,27 @@ function TodayPuzzleCard({ selectedPuzzle }) {
           </div>
         </div>
       </section>
+    );
+  }
+
+  if (isLearned) {
+    const records = [
+      {
+        label: "모음 · ㅏ",
+        feedback: "입술 닫힘 강도를 한 번 더 맞춰보면 좋아요",
+      },
+      {
+        label: "모음 · ㅗ",
+        feedback: "입술 닫힘 강도를 한 번 더 맞춰보면 좋아요",
+      },
+    ];
+
+    return (
+      <LearningRecordCard
+        month={displayMonth}
+        day={displayDay}
+        records={records}
+      />
     );
   }
 
@@ -69,11 +92,6 @@ function TodayPuzzleCard({ selectedPuzzle }) {
               <br />
               풍선을 사용하면 이 조각을 다시 얻을 수 있어요.
             </p>
-          </>
-        ) : isLearned ? (
-          <>
-            <h3>학습한 조각이에요</h3>
-            <p>해당 날짜의 학습 기록을 확인할 수 있어요</p>
           </>
         ) : (
           <>
