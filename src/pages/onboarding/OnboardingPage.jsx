@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MobileScreen from "../../components/layout/MobileScreen";
 import AppButton from "../../components/common/AppButton";
@@ -46,13 +46,16 @@ function OnboardingPage() {
   const slide = SLIDES[currentIndex];
   const isLast = currentIndex === SLIDES.length - 1;
 
-  function handleNext() {
-    if (isLast) {
-      navigate("/login");
-    } else {
-      setCurrentIndex((prev) => prev + 1);
-    }
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLast) {
+        navigate("/login");
+      } else {
+        setCurrentIndex((prev) => prev + 1);
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [currentIndex, isLast, navigate]);
 
   return (
     <MobileScreen className="onboarding-page">
@@ -86,9 +89,11 @@ function OnboardingPage() {
         <OnboardingIndicator currentIndex={currentIndex} total={SLIDES.length} />
       </section>
 
-      <div className="onboarding-bottom">
-        <AppButton onClick={handleNext}>시작하기</AppButton>
-      </div>
+      {isLast && (
+        <div className="onboarding-bottom">
+          <AppButton onClick={() => navigate("/login")}>시작하기</AppButton>
+        </div>
+      )}
     </MobileScreen>
   );
 }
