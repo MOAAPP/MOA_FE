@@ -26,15 +26,20 @@ function AccountInfoStep({ value, onChange }) {
       await checkDuplicateId(value.userId);
       setIdChecked(true);
     } catch (err) {
-      setIdError(err.message ?? "이미 사용 중인 아이디입니다.");
+      setIdError(err.message ?? "이미 사용 중인 아이디입니다");
     } finally {
       setCheckingId(false);
     }
   }
 
+  const passwordError =
+    value.password && !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(value.password)
+      ? "영문, 숫자, 특수문자를 포함해 8자 이상 입력해 주세요"
+      : "";
+
   const passwordMismatch =
     value.passwordConfirm && value.password !== value.passwordConfirm
-      ? "비밀번호가 일치하지 않습니다."
+      ? "비밀번호가 일치하지 않습니다"
       : "";
 
   return (
@@ -54,7 +59,7 @@ function AccountInfoStep({ value, onChange }) {
                 type="text"
                 value={value.userId ?? ""}
                 onChange={(e) => handleChange("userId", e.target.value)}
-                placeholder="아이디를 입력해주세요"
+                placeholder="아이디 입력해 주세요"
                 className="app-input"
               />
               {idChecked && <CheckIcon />}
@@ -77,8 +82,8 @@ function AccountInfoStep({ value, onChange }) {
           type={showPassword ? "text" : "password"}
           value={value.password ?? ""}
           onChange={(e) => handleChange("password", e.target.value)}
-          placeholder="비밀번호를 입력해주세요"
-          hint="영문, 숫자, 특수문자를 포함 8자 이상"
+          placeholder="비밀번호 입력해 주세요"
+          error={passwordError}
           rightAction={
             <button
               type="button"
@@ -97,7 +102,7 @@ function AccountInfoStep({ value, onChange }) {
           type={showConfirm ? "text" : "password"}
           value={value.passwordConfirm ?? ""}
           onChange={(e) => handleChange("passwordConfirm", e.target.value)}
-          placeholder="비밀번호를 다시 입력해주세요"
+          placeholder="비밀번호 다시 입력해 주세요"
           error={passwordMismatch}
           rightAction={
             <button

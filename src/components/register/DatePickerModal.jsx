@@ -1,25 +1,72 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./DatePickerModal.css";
 
 const YEARS = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 
-function getDaysInMonth(year, month) {
-  return new Date(year, month, 0).getDate();
+function getDays(year, month) {
+  if (!year || !month) return Array.from({ length: 31 }, (_, i) => i + 1);
+  return Array.from({ length: new Date(year, month, 0).getDate() }, (_, i) => i + 1);
+}
+
+function SelectField({ label, values, value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onOutside);
+    return () => document.removeEventListener("mousedown", onOutside);
+  }, [open]);
+
+  return (
+    <div className="date-picker-select-group" ref={ref}>
+      <label className="date-picker-select-label">{label}</label>
+      <div className={`date-picker-select-wrap${open ? " is-open" : ""}`}>
+        <span className="date-picker-select-value">
+          {value != null ? value : ""}
+        </span>
+        <button
+          type="button"
+          className="date-picker-chevron"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+
+        {open && (
+          <ul className="date-picker-dropdown">
+            {values.map((v) => (
+              <li
+                key={v}
+                className={`date-picker-option${v === value ? " is-selected" : ""}`}
+                onClick={() => { onChange(v); setOpen(false); }}
+              >
+                {v}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
 }
 
 function DatePickerModal({ value, onConfirm, onCancel }) {
-  const today = new Date();
-  const [year, setYear] = useState(value?.year ?? today.getFullYear());
-  const [month, setMonth] = useState(value?.month ?? today.getMonth() + 1);
-  const [day, setDay] = useState(value?.day ?? today.getDate());
+  const [year, setYear] = useState(value?.year ?? null);
+  const [month, setMonth] = useState(value?.month ?? null);
+  const [day, setDay] = useState(value?.day ?? null);
 
-  const days = Array.from({ length: getDaysInMonth(year, month) }, (_, i) => i + 1);
+  const days = getDays(year, month);
 
   useEffect(() => {
-    const maxDay = getDaysInMonth(year, month);
-    if (day > maxDay) setDay(maxDay);
-  }, [year, month, day]);
+    if (day != null && day > days.length) setDay(days.length);
+  }, [year, month]);
 
   return (
     <div className="date-picker-overlay" onClick={onCancel}>
@@ -28,53 +75,9 @@ function DatePickerModal({ value, onConfirm, onCancel }) {
         <p className="date-picker-title">생년월일 선택</p>
 
         <div className="date-picker-selects">
-          <div className="date-picker-select-group">
-            <label className="date-picker-select-label">년</label>
-            <div className="date-picker-select-wrap">
-              <select
-                value={year}
-                onChange={(e) => setYear(Number(e.target.value))}
-                className="date-picker-select"
-              >
-                {YEARS.map((y) => (
-                  <option key={y} value={y}>{y}</option>
-                ))}
-              </select>
-              <span className="date-picker-chevron">▾</span>
-            </div>
-          </div>
-
-          <div className="date-picker-select-group">
-            <label className="date-picker-select-label">월</label>
-            <div className="date-picker-select-wrap">
-              <select
-                value={month}
-                onChange={(e) => setMonth(Number(e.target.value))}
-                className="date-picker-select"
-              >
-                {MONTHS.map((m) => (
-                  <option key={m} value={m}>{m}</option>
-                ))}
-              </select>
-              <span className="date-picker-chevron">▾</span>
-            </div>
-          </div>
-
-          <div className="date-picker-select-group">
-            <label className="date-picker-select-label">일</label>
-            <div className="date-picker-select-wrap">
-              <select
-                value={day}
-                onChange={(e) => setDay(Number(e.target.value))}
-                className="date-picker-select"
-              >
-                {days.map((d) => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
-              </select>
-              <span className="date-picker-chevron">▾</span>
-            </div>
-          </div>
+          <SelectField label="년" values={YEARS} value={year} onChange={setYear} />
+          <SelectField label="월" values={MONTHS} value={month} onChange={setMonth} />
+          <SelectField label="일" values={days} value={day} onChange={setDay} />
         </div>
 
         <div className="date-picker-actions">

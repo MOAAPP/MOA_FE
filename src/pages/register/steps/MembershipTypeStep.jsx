@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "./MembershipTypeStep.css";
 
 const MEMBERSHIP_TYPES = [
@@ -14,6 +15,8 @@ const MEMBERSHIP_TYPES = [
 ];
 
 function MembershipTypeStep({ value, onChange }) {
+  const navigate = useNavigate();
+
   return (
     <div className="step-content membership-type">
       <div className="step-header">
@@ -46,6 +49,29 @@ function MembershipTypeStep({ value, onChange }) {
           );
         })}
       </div>
+
+      {value === "guardian" && (
+        <div className="guardian-info-card">
+          <p className="guardian-info-title">보호자와 함께 시작해볼까요?</p>
+          <p className="guardian-info-desc">만 14세 미만 학습자는 보호자와 함께 가입해요</p>
+          <div className="guardian-info-buttons">
+            <button
+              type="button"
+              className="guardian-btn"
+              onClick={() => navigate("/login")}
+            >
+              보호자 로그인하기
+            </button>
+            <button
+              type="button"
+              className="guardian-btn"
+              onClick={() => navigate("/register")}
+            >
+              보호자 회원가입하기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

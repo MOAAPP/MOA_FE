@@ -17,6 +17,9 @@ function RegisterCompletePage() {
       <div className="complete-center">
         <img src={moaLogo} alt="MOA 로고" className="complete-logo" />
         <p className="complete-brand">MOA</p>
+      </div>
+
+      <div className="complete-text-wrap">
         <p className="complete-message">이제 MOA를 시작해볼까요?</p>
       </div>
 

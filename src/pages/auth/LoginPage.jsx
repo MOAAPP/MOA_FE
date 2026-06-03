@@ -16,21 +16,8 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleLogin() {
-    if (!userId.trim() || !password.trim()) {
-      setError("아이디와 비밀번호를 입력해 주세요.");
-      return;
-    }
-    setError("");
-    setLoading(true);
-    try {
-      await login({ userId, password });
-      navigate("/home");
-    } catch (err) {
-      setError(err.message ?? "로그인에 실패했습니다.");
-    } finally {
-      setLoading(false);
-    }
+  function handleLogin() {
+    navigate("/register");
   }
 
   return (

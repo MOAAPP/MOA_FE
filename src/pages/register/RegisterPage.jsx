@@ -121,7 +121,11 @@ function RegisterPage() {
         onPrev={handlePrev}
         onNext={handleNext}
         nextLabel={isLast ? (loading ? "처리 중..." : "완료") : "다음"}
-        nextDisabled={loading || (currentStep === "typeSelect" && formData.userType !== "learner")}
+        nextDisabled={
+          loading ||
+          (currentStep === "typeSelect" && formData.userType !== "learner") ||
+          (currentStep === "membershipType" && formData.membershipType === "guardian")
+        }
       />
     </MobileScreen>
   );

@@ -47,15 +47,20 @@ function OnboardingPage() {
   const isLast = currentIndex === SLIDES.length - 1;
 
   useEffect(() => {
+    if (isLast) return;
     const timer = setTimeout(() => {
-      if (isLast) {
-        navigate("/login");
-      } else {
-        setCurrentIndex((prev) => prev + 1);
-      }
+      setCurrentIndex((prev) => prev + 1);
     }, 2000);
     return () => clearTimeout(timer);
-  }, [currentIndex, isLast, navigate]);
+  }, [currentIndex, isLast]);
+
+  const handleStart = () => {
+    if (isLast) {
+      navigate("/login");
+    } else {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  };
 
   return (
     <MobileScreen className="onboarding-page">
@@ -89,11 +94,9 @@ function OnboardingPage() {
         <OnboardingIndicator currentIndex={currentIndex} total={SLIDES.length} />
       </section>
 
-      {isLast && (
-        <div className="onboarding-bottom">
-          <AppButton onClick={() => navigate("/login")}>시작하기</AppButton>
-        </div>
-      )}
+      <div className="onboarding-bottom">
+        <AppButton onClick={handleStart}>시작하기</AppButton>
+      </div>
     </MobileScreen>
   );
 }

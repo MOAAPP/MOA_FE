@@ -34,11 +34,8 @@
 }
 
 .login-logo {
-  width: 80px;
+  width: 150px;
   height: auto;
-  flex-shrink: 0;
-  margin-left: 12px;
-  margin-top: -8px;
 }
 
 .login-fields {
@@ -91,19 +88,19 @@
 
 .login-puzzle {
   position: absolute;
-  opacity: 0.18;
+  opacity: 0.5;
 }
 
 .login-puzzle-left {
-  width: 200px;
-  bottom: 80px;
-  left: -20px;
+  width: 320px;
+  bottom: 60px;
+  left: -70px;
 }
 
 .login-puzzle-right {
-  width: 180px;
-  bottom: 60px;
-  right: -20px;
+  width: 300px;
+  bottom: 100px;
+  right: -60px;
 }
 
 .login-bottom {
