@@ -4,6 +4,7 @@ import OnboardingPage from "../pages/onboarding/OnboardingPage";
 import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import RegisterCompletePage from "../pages/register/RegisterCompletePage";
+import RecordPage from "../pages/record/RecordPage2";
 
 function Router() {
   return (
@@ -14,6 +15,7 @@ function Router() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/register/complete" element={<RegisterCompletePage />} />
+        <Route path="/record" element={<RecordPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
