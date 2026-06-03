@@ -1,0 +1,66 @@
+.learning-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.learning-section {
+  background: var(--blue-100);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.learning-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.learning-section-title {
+  color: var(--blue-950);
+  font-family: Pretendard, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.32px;
+}
+
+.learning-section-mode {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--blue-300);
+  color: var(--blue-800);
+  font-family: Pretendard, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.32px;
+}
+
+.learning-options {
+  display: grid;
+  gap: 8px;
+}
+
+.learning-option-btn {
+  min-height: 52px;
+  padding: 12px 8px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-background-elevated);
+  color: var(--color-text-primary);
+  font-family: Pretendard, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: -0.32px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.learning-option-btn--selected {
+  background: var(--color-primary-default);
+  border-color: var(--color-primary-default);
+  color: var(--color-text-inverse);
+}

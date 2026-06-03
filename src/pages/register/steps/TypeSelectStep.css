@@ -1,0 +1,100 @@
+.step-content {
+  padding: 60px 24px 24px;
+}
+
+.step-header {
+  margin-bottom: 32px;
+}
+
+.step-title {
+  margin: 0 0 8px;
+  color: var(--blue-950);
+  font-family: Pretendard, sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: -0.32px;
+}
+
+.step-subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+}
+
+.type-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.type-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--blue-100);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.type-card--selected {
+  background: var(--color-primary-default);
+}
+
+.type-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.type-card-label {
+  color: var(--color-text-primary);
+  font-family: Pretendard, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.32px;
+}
+
+.type-card--selected .type-card-label {
+  color: var(--color-text-inverse);
+}
+
+.type-card-desc {
+  white-space: pre-line;
+  color: var(--color-text-secondary);
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.32px;
+}
+
+.type-card--selected .type-card-desc {
+  color: var(--blue-200);
+}
+
+.type-card-radio {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--gray-300);
+  background: transparent;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.type-card-radio--checked {
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.3);
+}
