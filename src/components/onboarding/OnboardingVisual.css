@@ -1,0 +1,15 @@
+.onboarding-visual-wrap {
+    margin-top: 52px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .onboarding-visual {
+    display: block;
+    width: 320px;
+    height: auto;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }

@@ -1,7 +1,7 @@
 .register-page {
-  background: var(--color-background-default);
   display: flex;
   flex-direction: column;
+  background: var(--blue-50);
 }
 
 .register-scroll {
@@ -14,7 +14,6 @@
   display: none;
 }
 
-/* 하단 네비를 absolute에서 static으로 전환 */
 .register-page .bottom-nav {
   position: static;
   padding: 12px 17px 40px;

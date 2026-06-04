@@ -1,3 +1,4 @@
+import RegisterStepHeader from "../../../components/register/RegisterStepHeader";
 import "./LearningPreferenceStep.css";
 
 const SECTIONS = [
@@ -33,62 +34,98 @@ const SECTIONS = [
 
 function LearningPreferenceStep({ value, onChange }) {
   function handleToggle(sectionId, option, mode) {
-    const current = value[sectionId];
+    const currentValue = value[sectionId];
+
     if (mode === "single") {
-      onChange({ ...value, [sectionId]: option });
-    } else {
-      const arr = Array.isArray(current) ? current : [];
-      const next = arr.includes(option)
-        ? arr.filter((o) => o !== option)
-        : [...arr, option];
-      onChange({ ...value, [sectionId]: next });
+      onChange({
+        ...value,
+        [sectionId]: option,
+      });
+      return;
     }
+
+    const selectedOptions = Array.isArray(currentValue)
+      ? currentValue
+      : [];
+
+    const nextOptions = selectedOptions.includes(option)
+      ? selectedOptions.filter((selectedOption) => selectedOption !== option)
+      : [...selectedOptions, option];
+
+    onChange({
+      ...value,
+      [sectionId]: nextOptions,
+    });
   }
 
   return (
-    <div className="step-content learning-pref">
-      <div className="step-header">
-        <h1 className="step-title">맞춤 학습을 설정해요</h1>
-        <p className="step-subtitle">맞춤 학습을 위해 필요한 정보를 선택해주세요</p>
+    <div className="learning-preference-step">
+      <RegisterStepHeader
+        title="맞춤 학습을 설정해요"
+        subtitle="맞춤 학습을 위해 필요한 정보를 선택해주세요"
+      />
+
+      <div className="learning-preference-sections">
+        {SECTIONS.map((section) => (
+          <LearningPreferenceSection
+            key={section.id}
+            section={section}
+            value={value[section.id]}
+            onToggle={handleToggle}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LearningPreferenceSection({ section, value, onToggle }) {
+  return (
+    <section
+      className="learning-preference-section"
+      aria-labelledby={`${section.id}-title`}
+    >
+      <div className="learning-preference-section-header">
+        <h2
+          id={`${section.id}-title`}
+          className="learning-preference-section-title"
+        >
+          {section.title}
+        </h2>
+
+        <span className="learning-preference-section-mode">
+          {section.mode === "single" ? "단일 선택" : "복수 선택"}
+        </span>
       </div>
 
-      <div className="learning-sections">
-        {SECTIONS.map((section) => {
-          const current = value[section.id];
+      <div
+        className="learning-preference-options"
+        style={{
+          gridTemplateColumns: `repeat(${section.columns}, minmax(0, 1fr))`,
+        }}
+      >
+        {section.options.map((option) => {
+          const selected =
+            section.mode === "single"
+              ? value === option
+              : Array.isArray(value) && value.includes(option);
+
           return (
-            <div key={section.id} className="learning-section">
-              <div className="learning-section-header">
-                <span className="learning-section-title">{section.title}</span>
-                <span className="learning-section-mode">
-                  {section.mode === "single" ? "단일 선택" : "복수 선택"}
-                </span>
-              </div>
-              <div
-                className="learning-options"
-                style={{ gridTemplateColumns: `repeat(${section.columns}, 1fr)` }}
-              >
-                {section.options.map((option) => {
-                  const selected =
-                    section.mode === "single"
-                      ? current === option
-                      : Array.isArray(current) && current.includes(option);
-                  return (
-                    <button
-                      key={option}
-                      type="button"
-                      className={`learning-option-btn${selected ? " learning-option-btn--selected" : ""}`}
-                      onClick={() => handleToggle(section.id, option, section.mode)}
-                    >
-                      {option}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            <button
+              key={option}
+              type="button"
+              className={`learning-preference-option${
+                selected ? " learning-preference-option--selected" : ""
+              }`}
+              onClick={() => onToggle(section.id, option, section.mode)}
+              aria-pressed={selected}
+            >
+              {option}
+            </button>
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }
 

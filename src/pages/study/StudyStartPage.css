@@ -1,212 +1,216 @@
-/* ── 페이지 레이아웃 ── */
-.study-container {
-	position: relative;
-	width: 412px;
-	max-width: var(--mobile-screen-width);
-	height: var(--mobile-screen-height);
-	margin: 0 auto;
-	background: var(--Blue-50, #F7F9FF);
-	padding: 40px 24px 110px 24px;
+.study-page {
+	display: flex;
+	flex-direction: column;
+	background: var(--color-background-default);
+  }
+  
+  .study-scroll {
+	flex: 1;
+	min-height: 0;
 	box-sizing: border-box;
+	padding: 27px 17px 24px;
 	overflow-y: auto;
-}
-
-/* ── 헤더 ── */
-.study-title {
-	font-size: 24px;
-	font-weight: 700;
-	color: var(--color-text-primary);
-	line-height: 1.4;
-	margin-bottom: 24px;
-}
-
-/* ── 추천 카드 ── */
-.recommend-card {
-	border-radius: var(--radius-1, 12px);
-	background: var(--Blue-50, #F7F9FF);
-	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
-	padding: 20px;
-	margin-bottom: 32px;
-}
-
-.recommend-badge {
-	display: inline-block;
-	background-color: var(--blue-200);
-	color: var(--blue-800);
-	font-size: 12px;
-	font-weight: 600;
-	padding: 4px 8px;
-	border-radius: var(--radius-sm);
-	margin-bottom: 12px;
-}
-
-.recommend-text {
-	font-size: 18px;
-	font-weight: 700;
-	color: var(--color-text-primary);
-	margin: 0 0 4px 0;
-}
-
-.recommend-sub {
-	font-size: 13px;
-	color: var(--color-text-secondary);
-	margin: 0 0 16px 0;
-}
-
-.recommend-start-btn {
+	scrollbar-width: none;
+  }
+  
+  .study-scroll::-webkit-scrollbar {
+	display: none;
+  }
+  
+  .study-header {
 	width: 100%;
-	height: 48px;
-	background-color: var(--color-primary-default);
-	color: var(--color-text-inverse);
-	border: none;
-	border-radius: var(--radius-md);
-	font-size: 16px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: background-color 0.2s ease;
-}
-
-.recommend-start-btn:hover {
-	background-color: var(--color-primary-hover);
-}
-
-/* ── 퍼즐 섹션 ── */
-.puzzle-section-title {
-	font-family: Pretendard;
-	font-size: 20px;
-	font-weight: 600;
-	letter-spacing: -0.32px;
+  }
+  
+  .study-title {
+	margin: 0 0 26px;
 	color: var(--color-text-primary);
-	margin: 0 0 6px 0;
-}
-
-.puzzle-section-desc {
-	font-family: Pretendard;
-	font-size: 13px;
+	font-family: Pretendard, sans-serif;
+	font-size: 30px;
+	font-weight: 700;
+	line-height: 40px;
+	letter-spacing: -0.32px;
+  }
+  
+  .recommend-card {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 20px;
+	margin-bottom: 34px;
+	border-radius: 12px;
+	background: var(--blue-50);
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
+  }
+  
+  .recommend-badge {
+	display: inline-block;
+	margin-bottom: 8px;
+	padding: 4px 8px;
+	border-radius: 12px;
+	background: var(--blue-200);
+	color: var(--blue-800);
+	font-family: Pretendard, sans-serif;
+	font-size: 15px;
 	font-weight: 600;
 	line-height: 24px;
 	letter-spacing: -0.32px;
-	color: var(--color-text-secondary);
-	margin: 0 0 16px 0;
-}
-
-/* ── 퍼즐 보드 ── */
-.puzzle-board {
-	position: relative;
-	width: 100%;
-	max-width: 377px;
-	height: 269px;
-	box-sizing: border-box;
-	overflow: hidden;
-	margin: 0 auto;
-}
-
-.puzzle-piece {
-	position: absolute;
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: 0;
+  }
+  
+  .recommend-text {
+	margin: 0;
+	color: var(--blue-950);
+	font-family: Pretendard, sans-serif;
+	font-size: 22px;
+	font-weight: 600;
+	line-height: 32px;
+	letter-spacing: -0.32px;
+  }
+  
+  .recommend-sub {
+	margin: 0 0 20px;
+	color: var(--gray-600);
+	font-family: Pretendard, sans-serif;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 24px;
+	letter-spacing: -0.32px;
+  }
+  
+  .recommend-start-btn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	overflow: visible;
-}
-
-/* 퍼즐 조각 위치 */
-.puzzle-piece.vowel {
-	top: 0;
-	left: 0;
-	width: 56.5%;
-	height: 59.1%;
-}
-
-.puzzle-piece.syllable {
-	top: 0;
-	right: 0;
-	width: 56.5%;
-	height: 50.5%;
-}
-
-.puzzle-piece.word {
-	bottom: 0;
-	left: 0;
-	width: 56.5%;
-	height: 59.1%;
-}
-
-.puzzle-piece.sentence {
-	bottom: 0;
-	right: 0;
-	width: 56.5%;
-	height: 59.1%;
-}
-
-.puzzle-svg {
-	position: absolute;
-	top: 0;
-	left: 0;
 	width: 100%;
-	height: 100%;
-	display: block;
-}
-
-.puzzle-svg svg {
-	width: 100%;
-	height: 100%;
-	display: block;
-}
-
-/* 퍼즐 라벨 */
-.puzzle-label {
-	position: relative;
-	z-index: 1;
-	font-size: 20px;
-	font-weight: 700;
-	color: var(--blue-900);
-}
-
-.puzzle-piece.active .puzzle-label {
-	color: #ffffff;
-}
-
-.puzzle-piece.vowel .puzzle-label    { transform: translate(-15%, -20%); }
-.puzzle-piece.syllable .puzzle-label { transform: translate(15%, -10%); }
-.puzzle-piece.word .puzzle-label     { transform: translate(-15%, 15%); }
-.puzzle-piece.sentence .puzzle-label { transform: translate(15%, 15%); }
-
-/* ── 시작 버튼 ── */
-.action-button-area {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	bottom: 100px;
-	left: 0;
-	right: 0;
-	padding: 0 24px;
-}
-
-.main-start-btn {
-	display: flex;
-	width: 377px;
 	height: 50px;
-	padding: 10px;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
+	border: none;
 	border-radius: 12px;
 	background: var(--color-primary-default);
 	color: var(--color-text-inverse);
-	border: none;
-	cursor: pointer;
-	font-family: Pretendard;
+	font-family: Pretendard, sans-serif;
 	font-size: 20px;
 	font-weight: 600;
 	line-height: 30px;
 	letter-spacing: -0.32px;
-}
-
-.main-start-btn:hover {
-	background-color: var(--color-primary-hover);
-}
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+  }
+  
+  .recommend-start-btn:active {
+	opacity: 0.85;
+  }
+  
+  .puzzle-section {
+	width: 100%;
+  }
+  
+  .puzzle-section-title {
+	margin: 0;
+	color: var(--color-text-primary);
+	font-family: Pretendard, sans-serif;
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 30px;
+	letter-spacing: -0.32px;
+  }
+  
+  .puzzle-section-desc {
+	margin: 0 0 20px;
+	color: var(--gray-700);
+	font-family: Pretendard, sans-serif;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 24px;
+	letter-spacing: -0.32px;
+  }
+  
+  .puzzle-board {
+	width: 100%;
+	margin: 0 auto;
+	padding: 2px;
+	box-sizing: border-box;
+  }
+  
+  .puzzle-board-svg {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+  }
+  
+  .puzzle-group {
+	cursor: pointer;
+	outline: none;
+	transform-box: fill-box;
+	transform-origin: center;
+  }
+  
+  .puzzle-shape {
+	fill: var(--blue-200);
+	stroke: #ffffff;
+	stroke-width: 2.4;
+	stroke-linejoin: round;
+	transition:
+	  fill 0.18s ease,
+	  filter 0.18s ease,
+	  transform 0.18s ease;
+  }
+  
+  .puzzle-group--selected .puzzle-shape {
+	fill: var(--blue-500);
+	filter: drop-shadow(0 4px 8px rgba(86, 129, 255, 0.28));
+  }
+  
+  .puzzle-group:focus-visible .puzzle-shape {
+	stroke: var(--blue-700);
+	stroke-width: 3;
+  }
+  
+  .puzzle-label {
+	fill: var(--blue-900);
+	font-family: Pretendard, sans-serif;
+	font-size: 25px;
+	font-weight: 700;
+	letter-spacing: -0.32px;
+	pointer-events: none;
+	user-select: none;
+	transition: fill 0.18s ease;
+  }
+  
+  .puzzle-group--selected .puzzle-label {
+	fill: #ffffff;
+  }
+  
+  .study-action-area {
+	flex-shrink: 0;
+	padding: 0 17px 12px;
+	background: var(--color-background-default);
+  }
+  
+  .main-start-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 50px;
+	padding: 0 10px;
+	border: none;
+	border-radius: 12px;
+	background: var(--color-primary-default);
+	color: var(--blue-50);
+	font-family: Pretendard, sans-serif;
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 30px;
+	letter-spacing: -0.32px;
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+  }
+  
+  .main-start-btn:active {
+	opacity: 0.85;
+  }
+  
+  .study-page .study-bottom-nav-bar,
+  .study-page .bottom-nav-bar {
+	position: static;
+	flex-shrink: 0;
+  }
