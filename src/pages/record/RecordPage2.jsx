@@ -2,18 +2,27 @@ import { useMemo, useState } from "react";
 import MobileScreen from "../../components/layout/MobileScreen";
 import PuzzleSummaryCard from "../../components/record/PuzzleSummaryCard";
 import TodayPuzzleCard from "../../components/record/TodayPuzzleCard";
+import MonthCompleteBanner from "../../components/record/MonthCompleteBanner";
 
 import arrowLeft from "../../assets/images/record/left_side.svg";
 import arrowRight from "../../assets/images/record/right_side.svg";
 import allPuzzle from "../../assets/images/record/all_Puzzle.png";
 import lockImage from "../../assets/images/record/lock.png";
 import otherImage from "../../assets/images/record/other.png";
+import reviveImage1 from "../../assets/images/record/rivive1.png"
+import reviveImage2 from "../../assets/images/record/rivive2.png"
+import reviveImage3 from "../../assets/images/record/rivive3.png"
+import balloonIcon from "../../assets/images/record/balloon.svg";
+
 import "./RecordPage2.css";
 
 const YEAR = 2026;
 const COLS = 7;
 
 const MONTH_DATA = {
+  // 4: {
+  //   puzzleImage: allPuzzle,
+  // },
   5: {
     puzzleImage: allPuzzle,
   },
@@ -24,6 +33,12 @@ const MONTH_DATA = {
     puzzleImage: allPuzzle,
   },
 };
+
+const REVIVE_IMAGES = [reviveImage1, reviveImage2, reviveImage3];
+
+function getReviveImage(day) {
+  return REVIVE_IMAGES[day % REVIVE_IMAGES.length];
+}
 
 function getCalendarCells(year, month) {
   const firstDay = new Date(year, month - 1, 1);
@@ -63,8 +78,12 @@ function compareYearMonth(yearA, monthA, yearB, monthB) {
   return monthA - monthB;
 }
 
-function getCellStatus(year, month, day, today) {
+function getCellStatus(year, month, day, today, learnedDays) {
   if (!day) return "empty";
+
+  if (learnedDays.includes(day)) {
+    return "learned";
+  }
 
   const todayYear = today.getFullYear();
   const todayMonth = today.getMonth() + 1;
@@ -72,12 +91,14 @@ function getCellStatus(year, month, day, today) {
 
   const compare = compareYearMonth(year, month, todayYear, todayMonth);
 
-  if (compare < 0) return "open";
-  if (compare > 0) return "locked";
+  if (compare > 0) return "locked"; // 미래 달
+  if (compare < 0) return "missed"; // 지난 달인데 학습 안 함
 
-  return day <= todayDate ? "open" : "locked";
+  //같은 달
+  if (day > todayDate) return "locked"; // 오늘 이후
+  if (day == todayDate) return "today"; // 오늘인데 아직 학습 안 함
+  return "missed"; // 오늘 이전 날짜인데 학습 안 함
 }
-
 /**
  * 모든 조각이 서로 맞물리도록
  * 세로/가로 경계 방향을 한 번만 정해두는 함수
@@ -206,6 +227,14 @@ function makePuzzleCellPath(
 }
 
 function RecordPage() {
+  //학습한 날짜 데이터(mvp > 프가 관리)
+  const learnedDaysByMonth = {
+    5: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+    //5: [5, 6, 8, 10, 12, 15, 18, 20, 22, 24, 26, 27, 29, 30, 31],
+    6: [],
+    7: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+  };
+
   const [month, setMonth] = useState(6);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
 
@@ -230,18 +259,32 @@ function RecordPage() {
   // 테스트용으로 날짜 고정하고 싶으면 위 today 대신
   // const today = new Date(2026, 5, 16); // 2026년 6월 16일
 
-  const openedCount = calendarCells.filter(
-    (cell) => getCellStatus(YEAR, month, cell.day, today) === "open"
-  ).length;
+  const learnedDays = learnedDaysByMonth[month] ?? [];
 
-  // const learnedCount = openedCount;
-  // const totalCount = totalDays;
-
-  const learnedCount = 16;
-  const totalCount = 31;
+  const learnedCount = learnedDays.length;
+  const totalCount = totalDays;
   const emptyCount = totalCount - learnedCount;
   const completionRate = Math.round((learnedCount / totalCount) * 100);
   const progressPercent = completionRate;
+
+  const isMonthCompleted = learnedCount === totalCount;
+
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth() + 1;
+  const todayDate = today.getDate();
+
+  const isViewingTodayMonth = YEAR === todayYear && month === todayMonth;
+
+  const defaultPuzzle = isViewingTodayMonth
+    ? {
+        year: YEAR,
+        month,
+        day: todayDate,
+        status: getCellStatus(YEAR, month, todayDate, today, learnedDays),
+      }
+    : null;
+
+  const activePuzzle = selectedPuzzle ?? defaultPuzzle;
 
   const handlePrevMonth = () => {
   setSelectedPuzzle(null);
@@ -313,15 +356,15 @@ const handleNextMonth = () => {
 
             {/* 각 칸 내용 */}
             {calendarCells.map((cell) => {
-              const status = getCellStatus(YEAR, month, cell.day, today);
+              const status = getCellStatus(YEAR, month, cell.day, today, learnedDays);
               const x = cell.col * cellW;
               const y = cell.row * cellH;
               const clipId = `url(#cell-clip-${month}-${cell.index})`;
 
-              if (status === "open") {
+              if (status === "learned") {
                 return (
                   <image
-                    key={`open-${cell.index}`}
+                    key={`learned-${cell.index}`}
                     href={monthData.puzzleImage}
                     x="0"
                     y="0"
@@ -333,7 +376,7 @@ const handleNextMonth = () => {
                 );
               }
 
-              if (status === "locked") {
+              if (status === "locked" || status === "today") {
                 return (
                   <g key={`locked-${cell.index}`} clipPath={clipId}>
                     <rect
@@ -355,25 +398,90 @@ const handleNextMonth = () => {
                 );
               }
 
+              if (status === "missed") {
+                const reviveImage = getReviveImage(cell.day);
+
+                const labelY = y + cellH - 10;
+                const iconX = x + cellW / 2 - 23;
+                const textX = x + cellW / 2 + 2;
+
+                return (
+                  <g key={`missed-${cell.index}`} clipPath={clipId}>
+                    <rect
+                      x={x - 10}
+                      y={y - 8}
+                      width={cellW + 20}
+                      height={cellH + 16}
+                      fill="lightgray"
+                    />
+
+                    <image
+                      href={reviveImage}
+                      x={x - 10}
+                      y={y - 8}
+                      width={cellW + 20}
+                      height={cellH + 16}
+                      preserveAspectRatio="xMidYMid slice"
+                      opacity="0.92"
+                    />
+
+                    {/* 회색 블러 오버레이 */}
+                    <rect
+                      x={x - 10}
+                      y={y - 8}
+                      width={cellW + 20}
+                      height={cellH + 16}
+                      fill="#273a73"
+                      opacity="0.10"
+                    />
+
+                   <image
+                      href={balloonIcon}
+                      x={iconX}
+                      y={labelY - 8}
+                      width={13}
+                      height={14}
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+
+                  <text
+                    x={textX}
+                    y={labelY}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize="8"
+                    fontWeight="400"
+                    fontFamily="Pretendard"
+                    fill="#000"
+                    stroke="#f7f9ff"
+                    strokeWidth="1"
+                    paintOrder="stroke"
+                  >
+                    되살리기
+                  </text>
+                  </g>
+                );
+              }
+
               return (
                 <g key={`empty-${cell.index}`} clipPath={clipId}>
-                    <rect
+                  <rect
                     x={x - 8}
                     y={y - 8}
                     width={cellW + 16}
                     height={cellH + 16}
                     fill="#e5eaff"
-                    />
-                    <image
+                  />
+                  <image
                     href={otherImage}
                     x={x - 8}
                     y={y - 8}
                     width={cellW + 16}
                     height={cellH + 16}
                     preserveAspectRatio="xMidYMid slice"
-                    />
+                  />
                 </g>
-                );
+              );
             })}
 
             {/* 세로 퍼즐 경계선 */}
@@ -462,10 +570,9 @@ const handleNextMonth = () => {
                 </g>
               );
             })}
+
             {/* 날짜 클릭 영역 */}
             {calendarCells.map((cell) => {
-              if (!cell.day) return null;
-
               const path = makePuzzleCellPath(
                 cell.row,
                 cell.col,
@@ -483,7 +590,14 @@ const handleNextMonth = () => {
                   fill="transparent"
                   style={{ cursor: "pointer" }}
                   onClick={() => {
-                    const status = getCellStatus(YEAR, month, cell.day, today);
+                    if (!cell.day) {
+                      setSelectedPuzzle({
+                        status: "other",
+                      });
+                      return;
+                    }
+
+                    const status = getCellStatus(YEAR, month, cell.day, today, learnedDays);
 
                     setSelectedPuzzle({
                       year: YEAR,
@@ -517,8 +631,9 @@ const handleNextMonth = () => {
       <PuzzleSummaryCard label="완성률" value={`${completionRate}%`} />
     </div>
 
+    {isMonthCompleted && <MonthCompleteBanner month={month} />}
 
-    <TodayPuzzleCard selectedPuzzle={selectedPuzzle} />
+    <TodayPuzzleCard selectedPuzzle={activePuzzle} />
 
     </MobileScreen>
   );
