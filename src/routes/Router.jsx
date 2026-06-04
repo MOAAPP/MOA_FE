@@ -5,6 +5,11 @@ import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import RegisterCompletePage from "../pages/register/RegisterCompletePage";
 import RecordPage from "../pages/record/RecordPage2";
+import StudyStartPage from "../pages/study/StudyStartPage";
+import StudyStepSelectPage from "../pages/study/StudyStepSelectPage";
+import VowelStudyPage from "../pages/study/VowelStudyPage";
+import StudyCompletePage from "../pages/study/StudyCompletePage";
+import AIReportPage from "../pages/study/AIReportPage";
 
 function Router() {
   return (
@@ -16,6 +21,12 @@ function Router() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/register/complete" element={<RegisterCompletePage />} />
         <Route path="/record" element={<RecordPage />} />
+        <Route path="/study" element={<StudyStartPage />} />
+        <Route path="/study/complete" element={<StudyCompletePage />} />
+        <Route path="/study/vowel/:vowel" element={<VowelStudyPage />} />
+        <Route path="/study/:category" element={<StudyStepSelectPage />} />
+        <Route path="/analysis" element={<AIReportPage />} />
+          
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
