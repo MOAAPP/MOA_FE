@@ -8,17 +8,22 @@ function BottomNavigation({
   nextDisabled = false,
 }) {
   return (
-    <div className="bottom-nav">
+    <div className="register-bottom-navigation">
       {onPrev ? (
-        <button type="button" className="bottom-nav-btn bottom-nav-prev" onClick={onPrev}>
+        <button
+          type="button"
+          className="register-bottom-navigation-btn register-bottom-navigation-prev"
+          onClick={onPrev}
+        >
           {prevLabel}
         </button>
       ) : (
-        <div />
+        <div className="register-bottom-navigation-empty" />
       )}
+
       <button
         type="button"
-        className="bottom-nav-btn bottom-nav-next"
+        className="register-bottom-navigation-btn register-bottom-navigation-next"
         onClick={onNext}
         disabled={nextDisabled}
       >

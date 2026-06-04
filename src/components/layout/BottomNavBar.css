@@ -1,31 +1,76 @@
-.bottom-nav-bar {
+.study-bottom-nav-bar {
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
   z-index: 100;
-  background-color: white;
-}
 
-.nav-background-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.nav-click-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 90px;
+  box-sizing: border-box;
+
+  border-top: 1px solid var(--gray-400);
+  background: var(--color-background-elevated);
 }
 
-.nav-click-btn {
-  flex: 1;
-  background: transparent;
+.study-bottom-nav-item {
+  display: flex;
+  flex: 1 1 50%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  width: 50%;
+  height: 100%;
+  padding: 0;
+
   border: none;
+  background: transparent;
+
+  color: var(--gray-500);
   cursor: pointer;
+}
+
+.study-bottom-nav-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+
+  background: transparent;
+}
+
+.study-bottom-nav-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.study-bottom-nav-label {
+  color: var(--gray-500);
+  font-family: Pretendard;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+}
+
+/* 선택된 메뉴 */
+.study-bottom-nav-item--active .study-bottom-nav-icon-wrap {
+  background: var(--blue-100);
+}
+
+.study-bottom-nav-item--active .study-bottom-nav-label {
+  color: var(--blue-600);
 }

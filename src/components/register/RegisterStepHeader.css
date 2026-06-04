@@ -1,0 +1,23 @@
+.register-step-header {
+    margin-bottom: 35px;
+  }
+  
+  .register-step-title {
+    margin: 0 0 4px;
+    color: var(--blue-950);
+    font-family: Pretendard, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 36px;
+    letter-spacing: -0.32px;
+  }
+  
+  .register-step-subtitle {
+    margin: 0;
+    color: var(--gray-950);
+    font-family: Pretendard, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: -0.32px;
+  }

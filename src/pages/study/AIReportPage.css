@@ -1,117 +1,139 @@
-.ar-container {
+/* ── 페이지 전체: MobileScreen 안쪽에만 배경 적용 ── */
+.ar-page {
   position: relative;
-  width: 100%;
-  max-width: var(--mobile-screen-width);
-  height: var(--mobile-screen-height);
-  margin: 0 auto;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background: var(--Blue-50, #F7F9FF);
-  font-family: 'Pretendard', sans-serif;
+  box-sizing: border-box;
+  background: var(--blue-50);
+  font-family: Pretendard, sans-serif;
   overflow: hidden;
 }
 
 /* ── 헤더 ── */
 .ar-header {
+  position: relative;
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  padding: 45px 20px 27px 20px;
-  flex-shrink: 0;
-  
+
+  padding: 45px 20px 27px;
 }
 
 .ar-header-title {
+  color: #111827;
+  font-family: Pretendard;
   font-size: 17px;
   font-weight: 700;
-  color: #111827;
   letter-spacing: -0.3px;
 }
 
 .ar-share-btn {
   position: absolute;
   right: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
 
   display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  border: none;
+  background: none;
+
+  cursor: pointer;
+}
+
+.ar-share-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 /* ── 상단 고정 상태 바 ── */
 .ar-status-bar {
   flex-shrink: 0;
-  margin: 0 17px 10px 17px;
-  padding: 12px 15px 12px 15px;
+
+  width: auto;
+  height: 110px;
+  box-sizing: border-box;
+  margin: 0 17px 10px;
+  padding: 12px 15px;
+
+  border-radius: 12px;
+  background: var(--blue-100);
+
   box-shadow: none;
-  transition: opacity 0.5s ease, max-height 0.5s ease, margin 0.5s ease, padding 0.5s ease;
   overflow: hidden;
   max-height: 200px;
   opacity: 1;
-  width: 378px;
-  height: 110px;
-  border-radius: var(--radius-1, 12px);
-  background: var(--Blue-100, #E6ECFF);
+
+  transition:
+    opacity 0.5s ease,
+    max-height 0.5s ease,
+    margin 0.5s ease,
+    padding 0.5s ease,
+    height 0.5s ease;
 }
 
 /* 완료 시: 페이드아웃 후 공간도 사라짐 */
 .ar-status-bar.ar-status-done {
-  opacity: 0;
+  height: 0;
   max-height: 0;
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
+  opacity: 0;
   pointer-events: none;
 }
 
-/* 스피너(왼) + 오른쪽 콘텐츠 가로 배치 */
+/* 스피너 + 오른쪽 콘텐츠 */
 .ar-status-inner {
   display: flex;
   align-items: center;
   gap: 14px;
+
   padding-top: 13px;
   padding-left: 14px;
 }
 
-/* 오른쪽: 텍스트들 + 프로그레스 세로 정렬 */
 .ar-status-right {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
   min-width: 0;
   padding-bottom: 6px;
 }
 
-/* 작은 서브 레이블 "발음 결과 분석 중 ···" */
 .ar-status-sub {
-  font-size: 13px;
-  font-weight: 500;
-  color: #303030;
-  letter-spacing: -0.2px;
-  line-height: 20px;
   display: flex;
   align-items: center;
   gap: 4px;
+
+  color: #303030;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.2px;
 }
 
 .ar-status-dots {
-  color: #5681FF;
+  color: #5681ff;
   font-weight: 700;
   letter-spacing: 2px;
 }
 
-/* 큰 메인 메시지 "결과 화면을 완성하고 있어요" */
 .ar-status-msg {
+  color: #303030;
+  font-family: Pretendard;
   font-size: 17px;
   font-weight: 600;
-  color: #303030;
-  letter-spacing: -0.32px;
   line-height: 26px;
-  transition: color 0.3s;
+  letter-spacing: -0.32px;
+
+  transition: color 0.3s ease;
 }
 
 .ar-status-msg.ar-status-complete {
@@ -119,100 +141,115 @@
 }
 
 .ar-spinner-wrap {
-  border-radius: 15px;
-  background: var(--Blue-50, #F7F9FF);
-  width: 60px;
-  height: 60px;
-  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  width: 60px;
+  height: 60px;
+
+  border-radius: 15px;
+  background: #ffffff;
 }
 
-/* 뱅글뱅글 스피너 */
 .ar-spinner {
   width: 36px;
   height: 36px;
-  border: 4px solid #D3DCFF;
-  border-top-color: #5681FF;
+
+  border: 4px solid #d3dcff;
+  border-top-color: #5681ff;
   border-radius: 50%;
-  flex-shrink: 0;
+
   animation: ar-spin 0.75s linear infinite;
 }
 
 @keyframes ar-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .ar-status-check {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #22c55e;
-  color: white;
-  font-size: 22px;
-  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  width: 60px;
+  height: 60px;
+
+  border-radius: 50%;
+  background: #22c55e;
+
+  color: #ffffff;
+  font-family: Pretendard;
+  font-size: 22px;
+  font-weight: 700;
+
   animation: ar-pop-check 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes ar-pop-check {
-  0%   { transform: scale(0); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
-/* 단계 도트 */
-.ar-stage-dots {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
-.ar-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #D3DCFF;
-  transition: background 0.3s, transform 0.3s;
-}
-
-.ar-dot-done {
-  background: #5681FF;
-}
-
-.ar-dot-active {
-  background: #91ADFF;
-  transform: scale(1.3);
-}
-
-/* 프로그레스 바 */
+/* ── 프로그레스 바 ── */
 .ar-progress-wrap {
   width: 100%;
   height: 8px;
-  background: #E6ECFF;
+
   border-radius: 999px;
+  background: var(--blue-200);
   overflow: hidden;
 }
 
 .ar-progress-bar {
   height: 100%;
-  background: var(--Blue-500, #5681FF);
+
   border-radius: 999px;
+  background: var(--blue-500);
+
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── 스크롤 영역 ── */
 .ar-scroll {
   flex: 1;
-  overflow-y: auto;
-  padding: 0 17px 120px 17px;
+  min-height: 0;
+
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  box-sizing: border-box;
+  padding: 0 17px 40px;
+
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.ar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── PNG 저장 대상 영역 ── */
+.ar-report-capture {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+
+  background: var(--blue-50);
 }
 
 /* ── 스켈레톤 ── */
@@ -220,26 +257,68 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+
   padding-top: 2px;
 }
 
 .ar-skeleton {
-  background: linear-gradient(90deg, #E6ECFF 25%, #F0F4FF 50%, #E6ECFF 75%);
-  background-size: 200% 100%;
   border-radius: 12px;
+  background: linear-gradient(
+    90deg,
+    #e6ecff 25%,
+    #f0f4ff 50%,
+    #e6ecff 75%
+  );
+  background-size: 200% 100%;
+
   animation: ar-shimmer 1.4s ease-in-out infinite;
 }
 
 @keyframes ar-shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
-.ar-sk-wide  { height: 100px; }
-.ar-sk-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: none; animation: none; }
-.ar-sk-card  { height: 70px; border-radius: 10px; background: linear-gradient(90deg, #E6ECFF 25%, #F0F4FF 50%, #E6ECFF 75%); background-size: 200% 100%; animation: ar-shimmer 1.4s ease-in-out infinite; }
-.ar-sk-block { height: 90px; }
-.ar-sk-short { height: 60px; }
+.ar-sk-wide {
+  height: 100px;
+}
+
+.ar-sk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  background: none;
+  animation: none;
+}
+
+.ar-sk-card {
+  height: 70px;
+
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    #e6ecff 25%,
+    #f0f4ff 50%,
+    #e6ecff 75%
+  );
+  background-size: 200% 100%;
+
+  animation: ar-shimmer 1.4s ease-in-out infinite;
+}
+
+.ar-sk-block {
+  height: 90px;
+}
+
+.ar-sk-short {
+  height: 60px;
+}
 
 /* ── 팝인 애니메이션 ── */
 .ar-pop {
@@ -249,24 +328,38 @@
 }
 
 .ar-pop.ar-pop-in {
-  animation: ar-popin 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
   pointer-events: auto;
+  animation: ar-popin 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
 }
 
 @keyframes ar-popin {
-  0%   { opacity: 0; transform: translateY(22px) scale(0.96); }
-  60%  { opacity: 1; transform: translateY(-4px) scale(1.01); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ── RESULT 섹션 ── */
 .ar-result-section {
-  background: var(--Blue-100, #E6ECFF);
+  padding: 19px 33px 21px;
+
   border-radius: 15px;
-  padding: 19px 33px 21px 33px;
+  background: var(--blue-100);
 }
 
 .ar-result-label {
+  margin: 0 0 4px;
+
   color: #303030;
   font-family: Pretendard;
   font-size: 16px;
@@ -274,18 +367,17 @@
   font-weight: 500;
   line-height: 135.485%;
   letter-spacing: 5.6px;
-  margin: 0 0 4px 0px;
-
 }
 
 .ar-result-subtitle {
+  margin: 0 0 15px;
+
+  color: #303030;
+  font-family: Pretendard;
   font-size: 13px;
   font-weight: 500;
-  color: #303030;
-  margin: 0 0 15px 0;
   line-height: 20px;
   letter-spacing: -0.2px;
-
 }
 
 .ar-cards-grid {
@@ -295,86 +387,100 @@
 }
 
 .ar-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 3px;
+
+  padding: 10px;
+
+  border-radius: 10px;
+  background: #ffffff;
 }
 
 .ar-card-label {
+  margin: 0;
+
+  color: var(--gray-500);
+  font-family: Pretendard;
   font-size: 11px;
   font-weight: 500;
-  color: var(--Gray-500, #6B7280);
-  margin: 0;
 }
 
 .ar-card-value {
-  font-size: 14px;
-  font-weight: 700;
   margin: 0;
-  letter-spacing: -0.2px;
 
-  color: var(--Gray-950, #30333A);
-  /* Label/M */
+  color: var(--gray-950);
   font-family: Pretendard;
   font-size: 15px;
   font-style: normal;
   font-weight: 600;
-  line-height: 24px; /* 160% */
+  line-height: 24px;
   letter-spacing: -0.32px;
 }
 
-/* ── 섹션 카드 ── */
+/* ── 분석 내용 섹션 ── */
 .ar-section {
-  border-radius: 15px;
-  padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  padding: 15px;
+
+  border-radius: 15px;
 }
 
-.ar-section-blue  { background: var(--Blue-100, #E6ECFF);; }
-.ar-section-light { 
-  border-radius: var(--radius-1, 12px);
-  background: var(--Blue-100, #E6ECFF);
+.ar-section-blue {
+  background: var(--blue-100);
+}
+
+.ar-section-light {
+  border-radius: 12px;
+  background: var(--blue-100);
 }
 
 .ar-section-title {
+  margin: 0;
+
+  color: var(--gray-950);
+  font-family: Pretendard;
   font-size: 14px;
   font-weight: 700;
-  color: var(--Gray-950, #30333A);
-  margin: 0;
   letter-spacing: -0.3px;
-  
 }
 
 .ar-section-content {
-  font-size: 13px;
-  color: var(--Gray-950, #30333A);
   margin: 0;
+
+  color: var(--gray-950);
+  font-family: Pretendard;
+  font-size: 13px;
   line-height: 1.7;
   letter-spacing: -0.2px;
 }
 
 /* 통합 박스 안 서브 섹션 */
 .ar-inner-section {
-  background: #F7F9FF;
-  border-radius: 10px;
-  padding: 17px 22px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  padding: 17px 22px;
+
+  border-radius: 10px;
+  background: var(--blue-50);
 }
+
 .ar-check-list-div {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  padding: 14px;
+
   border-radius: 12px;
-  background: var(--Blue-50, #F7F9FF);
-  padding: 14px 14px;
+  background: var(--blue-50);
 }
+
 .ar-check-list {
   display: flex;
   flex-direction: column;
@@ -385,36 +491,27 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  border-radius: 15px;
-  background: var(--Blue-200, #D5DFFF);
+
   padding: 12px 14px;
+
+  border-radius: 15px;
+  background: var(--blue-200);
 }
 
-.ar-check-item svg { flex-shrink: 0; margin-top: 1px; }
+.ar-check-item svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
 
 .ar-check-text {
+  margin: 0;
+
+  color: var(--gray-950);
+  font-family: Pretendard;
   font-size: 13px;
   font-weight: 500;
-  color: var(--Gray-950, #30333A);
-  margin: 0;
   line-height: 1.6;
   letter-spacing: -0.2px;
-}
-
-/* ── 최종 메시지 ── */
-.ar-final-msg {
-  background: #E6ECFF;
-  border-radius: 14px;
-  padding: 16px 18px;
-  text-align: center;
-}
-
-.ar-final-msg p {
-  font-size: 14px;
-  font-weight: 600;
-  color: #3a5acc;
-  margin: 0;
-  line-height: 1.6;
 }
 
 /* ── 하단 버튼 ── */
@@ -422,37 +519,38 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+
   padding-top: 24px;
 }
 
-.ar-btn-retry {
-  width: 100%;
-  height: 52px;
-  border-radius: var(--radius-1, 12px);
-  border: none;
-  background: var(--Primary-Default, #5681FF);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  cursor: pointer;
-  font-family: 'Pretendard', sans-serif;
-  transition: background 0.15s;
-}
-
+.ar-btn-retry,
 .ar-btn-home {
   width: 100%;
   height: 52px;
-  border-radius: var(--radius-1, 12px);
 
-  background: var(--Blue-200, #D5DFFF);
-  color: var(--Gray-950, #30333A);
+  border: none;
+  border-radius: 12px;
+
+  font-family: Pretendard, sans-serif;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.3px;
-  cursor: pointer;
-  font-family: 'Pretendard', sans-serif;
-  transition: background 0.15s;
-  color: var(--Blue-950, #273A73);
 
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.ar-btn-retry {
+  background: var(--color-primary-default);
+  color: #ffffff;
+}
+
+.ar-btn-home {
+  background: var(--blue-200);
+  color: var(--blue-950);
+}
+
+.ar-btn-retry:active,
+.ar-btn-home:active {
+  opacity: 0.85;
 }

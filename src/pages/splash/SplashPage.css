@@ -72,7 +72,7 @@
   
     color: var(--blue-200);
     text-align: center;
-    font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: Pretendard;
     font-size: 30px;
     font-style: normal;
     font-weight: 700;
@@ -93,7 +93,7 @@
   
   .splash-title p {
     margin: 0;
-    font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: Pretendard;
     font-size: 22px;
     font-style: normal;
     font-weight: 600;

@@ -20,7 +20,7 @@ function Router() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/register/complete" element={<RegisterCompletePage />} />
-        <Route path="/record" element={<RecordPage />} />
+        <Route path="/x" element={<RecordPage />} />
         <Route path="/study" element={<StudyStartPage />} />
         <Route path="/study/complete" element={<StudyCompletePage />} />
         <Route path="/study/vowel/:vowel" element={<VowelStudyPage />} />
