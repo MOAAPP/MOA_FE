@@ -1,105 +1,242 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import MobileScreen from "../../components/layout/MobileScreen";
 import BottomNavBar from "../../components/layout/BottomNavBar";
 import "./StudyStartPage.css";
 
-const PUZZLE_COLOR_DEFAULT = "#D5E0FF";  // --blue-200
-const PUZZLE_COLOR_ACTIVE = "#5681FF";   // --blue-500
-const PUZZLE_STROKE = "#F7F9FF";
-
-const puzzleList = [
-	{
-		id: "vowel", label: "모음", zIndex: 2,
-		svg: (color) => (
-			<svg width="213" height="159" viewBox="0 0 213 159" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M14.25 0.75H189.75V28.1059C189.75 37.2246 212.25 37.2246 212.25 58.8814C212.25 80.5381 189.75 80.5381 189.75 89.6568V135.25H133.5C124.5 135.25 124.5 158.047 103.125 158.047C81.7499 158.047 81.7499 135.25 72.75 135.25H0.75V14.428C0.75 5.30932 5.25 0.75 14.25 0.75Z" fill={color} stroke={PUZZLE_STROKE} strokeWidth="1.5" strokeLinejoin="round"/>
-			</svg>
-		)
-	},
-	{
-		id: "syllable", label: "음절", zIndex: 3,
-		svg: (color) => (
-			<svg width="213" height="136" viewBox="0 0 213 136" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M23.25 0.75H198.75C207.75 0.75 212.25 5.30932 212.25 14.428V135.25H140.25C131.25 135.25 131.25 112.453 109.875 112.453C88.4999 112.453 88.4999 135.25 79.4999 135.25H23.25V89.6568C23.25 80.5381 0.75 80.5381 0.75 58.8814C0.75 37.2246 23.25 37.2246 23.25 28.1059V0.75Z" fill={color} stroke={PUZZLE_STROKE} strokeWidth="1.5" strokeLinejoin="round"/>
-			</svg>
-		)
-	},
-	{
-		id: "word", label: "단어", zIndex: 5,
-		svg: (color) => (
-			<svg width="213" height="159" viewBox="0 0 213 159" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M0.75 23.5466H72.75C81.7499 23.5466 81.7499 0.75 103.125 0.75C124.5 0.75 124.5 23.5466 133.5 23.5466H189.75V69.1398C189.75 78.2585 212.25 78.2585 212.25 99.9153C212.25 121.572 189.75 121.572 189.75 130.691V158.047H14.25C5.25 158.047 0.75 153.487 0.75 144.369V23.5466Z" fill={color} stroke={PUZZLE_STROKE} strokeWidth="1.5" strokeLinejoin="round"/>
-			</svg>
-		)
-	},
-	{
-		id: "sentence", label: "문장", zIndex: 4,
-		svg: (color) => (
-			<svg width="213" height="159" viewBox="0 0 213 159" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M23.25 23.5466H79.4999C88.4999 23.5466 88.4999 0.75 109.875 0.75C131.25 0.75 131.25 23.5466 140.25 23.5466H212.25V158.047H23.25V130.691C23.25 121.572 0.75 121.572 0.75 99.9153C0.75 78.2585 23.25 78.2585 23.25 69.1398V23.5466Z" fill={color} stroke={PUZZLE_STROKE} strokeWidth="1.5" strokeLinejoin="round"/>
-			</svg>
-		)
-	},
+const PUZZLE_ITEMS = [
+  {
+    id: "vowel",
+    label: "모음",
+    description: "입모양 기초",
+    labelX: 95,
+    labelY: 65,
+    path: `
+      M 14 1
+      H 189
+      V 43
+      C 189 51, 203 51, 203 67
+      C 203 83, 189 83, 189 91
+      V 134
+      H 135
+      C 128 134, 126 150, 110 150
+      C 94 150, 92 134, 85 134
+      H 1
+      V 14
+      Q 1 1, 14 1
+      Z
+    `,
+  },
+  {
+    id: "syllable",
+    label: "음절",
+    description: "소리 연결",
+    labelX: 283,
+    labelY: 65,
+    path: `
+      M 189 1
+      H 364
+      Q 377 1, 377 14
+      V 134
+      H 293
+      C 286 134, 284 118, 268 118
+      C 252 118, 250 134, 243 134
+      H 189
+      V 91
+      C 189 83, 203 83, 203 67
+      C 203 51, 189 51, 189 43
+      Z
+    `,
+  },
+  {
+    id: "word",
+    label: "단어",
+    description: "단어 발음",
+    labelX: 95,
+    labelY: 201,
+    path: `
+      M 1 134
+      H 85
+      C 92 134, 94 150, 110 150
+      C 126 150, 128 134, 135 134
+      H 189
+      V 181
+      C 189 188, 179 191, 179 201
+      C 179 211, 189 214, 189 221
+      V 267
+      H 14
+      Q 1 267, 1 254
+      V 134
+      Z
+    `,
+  },
+  {
+    id: "sentence",
+    label: "문장",
+    description: "문장 연습",
+    labelX: 283,
+    labelY: 201,
+    path: `
+      M 189 134
+      H 243
+      C 250 134, 252 118, 268 118
+      C 284 118, 286 134, 293 134
+      H 377
+      V 254
+      Q 377 267, 364 267
+      H 189
+      V 221
+      C 189 214, 179 211, 179 201
+      C 179 191, 189 188, 189 181
+      Z
+    `,
+  },
 ];
 
 function StudyStartPage() {
-	const navigate = useNavigate();
-	const [selectedPuzzle, setSelectedPuzzle] = useState(null);
+  const navigate = useNavigate();
+  const [selectedPuzzle, setSelectedPuzzle] = useState(null);
 
-	return (
-		<div className="study-container">
-			{/* 헤더 */}
-			<header className="study-header">
-				<h1 className="study-title">어떤 발음을<br />모아볼까요?</h1>
-				<div className="recommend-card">
-					<span className="recommend-badge">오늘 추천 조각</span>
-					<p className="recommend-text">처음이라면 모음부터 시작해보세요</p>
-					<p className="recommend-sub">입모양을 먼저 익히면 단어와 문장 연습이 더 쉬워져요</p>
-					<button className="recommend-start-btn" onClick={() => navigate("/study/consonant")}>
-						모음 학습 시작하기
-					</button>
-				</div>
-			</header>
+  function handlePuzzleSelect(puzzleId) {
+    setSelectedPuzzle(puzzleId);
+  }
 
-			{/* 퍼즐 선택 */}
-			<section className="puzzle-section">
-				<h2 className="puzzle-section-title">발음 퍼즐 선택</h2>
-				<p className="puzzle-section-desc">오늘 필요한 조각부터 고르고, 하나씩 맞추며 학습을 이어가요</p>
+  function handlePuzzleKeyDown(event, puzzleId) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handlePuzzleSelect(puzzleId);
+    }
+  }
 
-				<div className="puzzle-board">
-					{puzzleList.map((puzzle) => {
-						const isSelected = selectedPuzzle === puzzle.id;
-						const color = isSelected ? PUZZLE_COLOR_ACTIVE : PUZZLE_COLOR_DEFAULT;
-						return (
-							<button
-								key={puzzle.id}
-								className={`puzzle-piece ${puzzle.id} ${isSelected ? "active" : ""}`}
-								style={{ zIndex: puzzle.zIndex }}
-								onClick={() => setSelectedPuzzle(puzzle.id)}
-							>
-								<span className="puzzle-svg">{puzzle.svg(color)}</span>
-								<span className="puzzle-label">{puzzle.label}</span>
-							</button>
-						);
-					})}
-				</div>
-			</section>
+  return (
+    <MobileScreen className="study-page">
+      <div className="study-bg-decoration study-bg-decoration-1" />
+      <div className="study-bg-decoration study-bg-decoration-2" />
 
-			{/* 시작 버튼 */}
-			{selectedPuzzle && (
-				<div className="action-button-area">
-					<button
-						className="main-start-btn"
-						onClick={() => navigate(`/study/${selectedPuzzle}`)}
-					>
-						시작하기
-					</button>
-				</div>
-			)}
+      <div className="study-scroll">
+        <header className="study-header">
+          <p className="study-eyebrow">MOA Learning</p>
 
-			<BottomNavBar activeNav="study" />
-		</div>
-	);
+          <h1 className="study-title">
+            어떤 발음을
+            <br />
+            모아볼까요?
+          </h1>
+        </header>
+
+        <section className="recommend-card">
+          <div className="recommend-top">
+            <span className="recommend-badge">오늘 추천 조각</span>
+            <span className="recommend-small-label">STEP 01</span>
+          </div>
+
+          <p className="recommend-text">
+            처음이라면 모음부터
+            <br />
+            시작해보세요
+          </p>
+
+          <p className="recommend-sub">
+            입모양을 먼저 익히면 단어와 문장 연습이 더 쉬워져요.
+          </p>
+
+          <button
+            type="button"
+            className="recommend-start-btn"
+            onClick={() => navigate("/study/vowel")}
+          >
+            모음 학습 시작하기
+          </button>
+        </section>
+
+        <section className="puzzle-section">
+          <div className="puzzle-section-header">
+            <div>
+              <h2 className="puzzle-section-title">발음 퍼즐 선택</h2>
+
+              <p className="puzzle-section-desc">
+                오늘 필요한 조각부터 골라 학습을 이어가요
+              </p>
+            </div>
+
+            {selectedPuzzle && (
+              <span className="puzzle-selected-chip">
+                선택 완료
+              </span>
+            )}
+          </div>
+
+          <div className="puzzle-card">
+            <div className="puzzle-board">
+              <svg
+                className="puzzle-board-svg"
+                viewBox="0 0 378 268"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-label="발음 퍼즐 선택"
+              >
+                {PUZZLE_ITEMS.map((puzzle) => {
+                  const isSelected = selectedPuzzle === puzzle.id;
+
+                  return (
+                    <g
+                      key={puzzle.id}
+                      className={`puzzle-group${
+                        isSelected ? " puzzle-group--selected" : ""
+                      }`}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${puzzle.label} 학습 선택`}
+                      aria-pressed={isSelected}
+                      onClick={() => handlePuzzleSelect(puzzle.id)}
+                      onKeyDown={(event) =>
+                        handlePuzzleKeyDown(event, puzzle.id)
+                      }
+                    >
+                      <path className="puzzle-shape" d={puzzle.path} />
+
+                      <text
+                        className="puzzle-label"
+                        x={puzzle.labelX}
+                        y={puzzle.labelY - 6}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        {puzzle.label}
+                      </text>
+
+                      <text
+                        className="puzzle-description"
+                        x={puzzle.labelX}
+                        y={puzzle.labelY + 25}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        {puzzle.description}
+                      </text>
+                    </g>
+                  );
+                })}
+              </svg>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div className={`study-action-area${selectedPuzzle ? " show" : ""}`}>
+        <button
+          type="button"
+          className="main-start-btn"
+          disabled={!selectedPuzzle}
+          onClick={() => selectedPuzzle && navigate(`/study/${selectedPuzzle}`)}
+        >
+          {selectedPuzzle ? "선택한 발음 시작하기" : "퍼즐을 선택해주세요"}
+        </button>
+      </div>
+
+      <BottomNavBar activeNav="study" />
+    </MobileScreen>
+  );
 }
 
 export default StudyStartPage;

@@ -1,37 +1,46 @@
-.bottom-nav {
+.register-bottom-navigation {
   position: absolute;
   left: 17px;
   right: 17px;
-  bottom: 40px;
+  bottom: 50px;
+  z-index: var(--z-content);
+
   display: flex;
   gap: 12px;
 }
 
-.bottom-nav-btn {
+.register-bottom-navigation-empty {
+  flex: 1;
+}
+
+.register-bottom-navigation-btn {
   flex: 1;
   height: 50px;
+
   border: none;
   border-radius: var(--radius-md);
+
   font-family: Pretendard, sans-serif;
   font-size: 20px;
   font-weight: 600;
   line-height: 30px;
   letter-spacing: -0.32px;
+
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: opacity 0.15s ease;
 }
 
-.bottom-nav-btn:disabled {
+.register-bottom-navigation-btn:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
-.bottom-nav-prev {
+.register-bottom-navigation-prev {
   background: var(--blue-100);
   color: var(--color-text-primary);
 }
 
-.bottom-nav-next {
+.register-bottom-navigation-next {
   background: var(--color-primary-default);
   color: var(--color-text-inverse);
 }

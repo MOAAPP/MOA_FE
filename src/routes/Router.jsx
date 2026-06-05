@@ -18,15 +18,19 @@ function Router() {
         <Route path="/" element={<SplashPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/login" element={<LoginPage />} />
+
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/register/complete" element={<RegisterCompletePage />} />
-        <Route path="/record" element={<RecordPage />} />
+
         <Route path="/study" element={<StudyStartPage />} />
+        <Route path="/record" element={<RecordPage />} />
+
         <Route path="/study/complete" element={<StudyCompletePage />} />
         <Route path="/study/vowel/:vowel" element={<VowelStudyPage />} />
         <Route path="/study/:category" element={<StudyStepSelectPage />} />
+
         <Route path="/analysis" element={<AIReportPage />} />
-          
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

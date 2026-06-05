@@ -1,31 +1,85 @@
-.bottom-nav-bar {
+.study-bottom-nav-bar {
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
   z-index: 100;
-  background-color: white;
-}
 
-.nav-background-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.nav-click-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 86px;
+  box-sizing: border-box;
+  padding: 8px 42px 10px;
+
+  border-top: 1px solid rgba(213, 223, 255, 0.7);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
 }
 
-.nav-click-btn {
-  flex: 1;
-  background: transparent;
+.study-bottom-nav-item {
+  display: flex;
+  flex: 1 1 50%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  width: 50%;
+  height: 100%;
+  padding: 0;
+
   border: none;
+  background: transparent;
+
+  color: var(--gray-500);
   cursor: pointer;
+}
+
+.study-bottom-nav-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+
+  background: transparent;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.study-bottom-nav-icon {
+  display: block;
+  width: 23px;
+  height: 23px;
+
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.study-bottom-nav-label {
+  color: var(--gray-500);
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.32px;
+  transition: color 0.15s ease;
+}
+
+/* 선택된 메뉴 */
+.study-bottom-nav-item--active .study-bottom-nav-icon-wrap {
+  background: var(--blue-100);
+  transform: translateY(-1px);
+}
+
+.study-bottom-nav-item--active .study-bottom-nav-label {
+  color: var(--blue-600);
+  font-weight: 600;
 }

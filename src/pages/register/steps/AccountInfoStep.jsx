@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AppInput from "../../../components/common/AppInput";
+import RegisterStepHeader from "../../../components/register/RegisterStepHeader";
 import { checkDuplicateId } from "../../../api/auth";
 import "./AccountInfoStep.css";
 
@@ -11,8 +12,15 @@ function AccountInfoStep({ value, onChange }) {
   const [checkingId, setCheckingId] = useState(false);
 
   function handleChange(field, fieldValue) {
-    if (field === "userId") setIdChecked(false);
-    onChange({ ...value, [field]: fieldValue });
+    if (field === "userId") {
+      setIdChecked(false);
+      setIdError("");
+    }
+
+    onChange({
+      ...value,
+      [field]: fieldValue,
+    });
   }
 
   async function handleCheckId() {
@@ -20,20 +28,26 @@ function AccountInfoStep({ value, onChange }) {
       setIdError("아이디를 입력해 주세요.");
       return;
     }
+
     setIdError("");
     setCheckingId(true);
+
     try {
       await checkDuplicateId(value.userId);
       setIdChecked(true);
-    } catch (err) {
-      setIdError(err.message ?? "이미 사용 중인 아이디입니다");
+    } catch (error) {
+      setIdChecked(false);
+      setIdError(error.message ?? "이미 사용 중인 아이디입니다.");
     } finally {
       setCheckingId(false);
     }
   }
 
   const passwordError =
-    value.password && !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(value.password)
+    value.password &&
+    !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(
+      value.password
+    )
       ? "영문, 숫자, 특수문자를 포함해 8자 이상 입력해 주세요"
       : "";
 
@@ -43,36 +57,54 @@ function AccountInfoStep({ value, onChange }) {
       : "";
 
   return (
-    <div className="step-content account-info">
-      <div className="step-header">
-        <h1 className="step-title">계정 정보를 입력해 주세요</h1>
-        <p className="step-subtitle">MOA에서 사용할 계정을 만들어주세요</p>
-      </div>
+    <div className="account-info-step">
+      <RegisterStepHeader
+        title="계정 정보를 입력해 주세요"
+        subtitle="MOA에서 사용할 계정을 만들어주세요"
+      />
 
       <div className="account-info-fields">
         <div className="app-input-group">
-          <label htmlFor="userId" className="app-input-label">아이디</label>
-          <div className="basic-info-with-btn">
-            <div className={`app-input-row basic-info-input-flex${idError ? " app-input-row--error" : ""}`}>
+          <label htmlFor="userId" className="app-input-label">
+            아이디
+          </label>
+
+          <div className="account-info-inline-row">
+            <div
+              className={`app-input-row account-info-input-flex${
+                idError ? " app-input-row--error" : ""
+              }`}
+            >
               <input
                 id="userId"
                 type="text"
                 value={value.userId ?? ""}
-                onChange={(e) => handleChange("userId", e.target.value)}
+                onChange={(event) =>
+                  handleChange("userId", event.target.value)
+                }
                 placeholder="아이디 입력해 주세요"
                 className="app-input"
               />
-              {idChecked && <CheckIcon />}
+
+              {idChecked && (
+                <span className="account-info-check-icon">
+                  <CheckIcon />
+                </span>
+              )}
             </div>
+
             <button
               type="button"
-              className={`basic-info-action-btn${idChecked ? " basic-info-action-btn--sent" : ""}`}
+              className={`account-info-action-btn${
+                idChecked ? " account-info-action-btn--checked" : ""
+              }`}
               onClick={handleCheckId}
               disabled={checkingId || idChecked}
             >
               {checkingId ? "확인 중" : idChecked ? "확인됨" : "중복확인"}
             </button>
           </div>
+
           {idError && <p className="app-input-error">{idError}</p>}
         </div>
 
@@ -81,14 +113,16 @@ function AccountInfoStep({ value, onChange }) {
           label="비밀번호"
           type={showPassword ? "text" : "password"}
           value={value.password ?? ""}
-          onChange={(e) => handleChange("password", e.target.value)}
+          onChange={(event) =>
+            handleChange("password", event.target.value)
+          }
           placeholder="비밀번호 입력해 주세요"
           error={passwordError}
           rightAction={
             <button
               type="button"
-              className="login-eye-btn"
-              onClick={() => setShowPassword((v) => !v)}
+              className="account-info-eye-btn"
+              onClick={() => setShowPassword((current) => !current)}
               aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
             >
               {showPassword ? <EyeOnIcon /> : <EyeOffIcon />}
@@ -101,14 +135,16 @@ function AccountInfoStep({ value, onChange }) {
           label="비밀번호 확인"
           type={showConfirm ? "text" : "password"}
           value={value.passwordConfirm ?? ""}
-          onChange={(e) => handleChange("passwordConfirm", e.target.value)}
+          onChange={(event) =>
+            handleChange("passwordConfirm", event.target.value)
+          }
           placeholder="비밀번호 다시 입력해 주세요"
           error={passwordMismatch}
           rightAction={
             <button
               type="button"
-              className="login-eye-btn"
-              onClick={() => setShowConfirm((v) => !v)}
+              className="account-info-eye-btn"
+              onClick={() => setShowConfirm((current) => !current)}
               aria-label={showConfirm ? "비밀번호 숨기기" : "비밀번호 보기"}
             >
               {showConfirm ? <EyeOnIcon /> : <EyeOffIcon />}
@@ -122,15 +158,37 @@ function AccountInfoStep({ value, onChange }) {
 
 function CheckIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <path d="M5 13l4 4L19 7" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M5 13l4 4L19 7"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function EyeOffIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
       <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
       <line x1="1" y1="1" x2="23" y2="23" />
@@ -140,7 +198,17 @@ function EyeOffIcon() {
 
 function EyeOnIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
       <circle cx="12" cy="12" r="3" />
     </svg>

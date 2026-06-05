@@ -2,7 +2,7 @@
 @import "./reset.css";
 
 body {
-  background: var(--color-background-default);
+  background: var(--blue-50);
   color: var(--color-text-primary);
   font-family:
     -apple-system,
