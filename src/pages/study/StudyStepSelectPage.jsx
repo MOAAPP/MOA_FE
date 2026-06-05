@@ -2,27 +2,35 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MobileScreen from "../../components/layout/MobileScreen";
 import backIcon from "../../assets/images/study/icon-back.svg";
+
+import ahFrontVideo from "../../assets/videos/ah_front.mp4";
+import uhFrontVideo from "../../assets/videos/uh_front.mp4";
+import ohFrontVideo from "../../assets/videos/oh_front.mp4";
+import wooFrontVideo from "../../assets/videos/woo_front.mp4";
+import euFrontVideo from "../../assets/videos/eu_front.mp4";
+import iFrontVideo from "../../assets/videos/i_front.mp4";
+
 import "./StudyStepSelectPage.css";
 
 const SINGLE_VOWELS = ["ㅏ", "ㅓ", "ㅗ", "ㅜ", "ㅡ", "ㅣ", "ㅐ", "ㅔ"];
 const DOUBLE_VOWELS = ["ㅑ", "ㅕ", "ㅛ", "ㅠ", "ㅒ", "ㅖ", "ㅢ"];
 
 const VOWEL_VIDEO_MAP = {
-  "ㅏ": "ah_front",
-  "ㅓ": "uh_front",
-  "ㅗ": "oh_front",
-  "ㅜ": "woo_front",
-  "ㅡ": "eu_front",
-  "ㅣ": "i_front",
-  "ㅐ": "ah_front",
-  "ㅔ": "ah_front",
-  "ㅑ": "ah_front",
-  "ㅕ": "uh_front",
-  "ㅛ": "oh_front",
-  "ㅠ": "woo_front",
-  "ㅒ": "ah_front",
-  "ㅖ": "ah_front",
-  "ㅢ": "eu_front",
+  "ㅏ": ahFrontVideo,
+  "ㅓ": uhFrontVideo,
+  "ㅗ": ohFrontVideo,
+  "ㅜ": wooFrontVideo,
+  "ㅡ": euFrontVideo,
+  "ㅣ": iFrontVideo,
+  "ㅐ": ahFrontVideo,
+  "ㅔ": ahFrontVideo,
+  "ㅑ": ahFrontVideo,
+  "ㅕ": uhFrontVideo,
+  "ㅛ": ohFrontVideo,
+  "ㅠ": wooFrontVideo,
+  "ㅒ": ahFrontVideo,
+  "ㅖ": ahFrontVideo,
+  "ㅢ": euFrontVideo,
 };
 
 function StudyStepSelectPage() {
@@ -34,6 +42,9 @@ function StudyStepSelectPage() {
 
   const currentVowels =
     vowelTab === "single" ? SINGLE_VOWELS : DOUBLE_VOWELS;
+
+  const selectedVideoSrc =
+    VOWEL_VIDEO_MAP[selectedVowel] || ahFrontVideo;
 
   function handleTabChange(tab) {
     setVowelTab(tab);
@@ -207,9 +218,7 @@ function StudyStepSelectPage() {
         <div className="study-select-video-wrapper">
           <video
             className="study-select-video"
-            src={`/src/assets/videos/${
-              VOWEL_VIDEO_MAP[selectedVowel] || "ah_front"
-            }.mp4`}
+            src={selectedVideoSrc}
             autoPlay
             loop
             muted
