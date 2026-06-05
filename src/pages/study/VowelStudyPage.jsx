@@ -13,7 +13,7 @@ import iFrontVideo from "../../assets/videos/i_front.mp4";
 
 import "./VowelStudyPage.css";
 
-const API_BASE = "http://localhost:8001";
+const API_BASE = "http://localhost:8000";
 
 const MicIcon = () => (
   <svg
@@ -156,15 +156,21 @@ function extractLipData(landmarks) {
   };
 }
 
-function extractFeedbackText(feedback) {
-  if (!feedback) return "";
-  if (typeof feedback === "string") return feedback;
+function getDisplayRecognizedText(text) {
+	if (!text) return "";
 
-  if (typeof feedback === "object") {
-    return feedback.user_message ?? JSON.stringify(feedback);
-  }
+	const cleaned = text.replace(/\s+/g, "");
 
-  return String(feedback);
+	if (!cleaned) return "";
+
+	// 같은 글자가 반복되는 경우: "아아아아" -> "아"
+	const uniqueChars = [...new Set([...cleaned])];
+
+	if (uniqueChars.length === 1) {
+		return uniqueChars[0];
+	}
+
+	return cleaned;
 }
 
 function VowelStudyPage() {
@@ -177,6 +183,13 @@ function VowelStudyPage() {
     VOWEL_SOUND_GUIDES[selectedVowel] || VOWEL_SOUND_GUIDES["ㅏ"];
   const videoSrc = vowelVideoMap[selectedVowel] || ahFrontVideo;
 
+	const [isSpeechGoalAchieved, setIsSpeechGoalAchieved] = useState(false);
+
+	const [attempt, setAttempt] = useState(() => {
+		const saved = localStorage.getItem("total_attempts");
+		return saved ? Number(saved) : 0;
+	});
+	
   const [activeTab, setActiveTab] = useState(1);
   const [accuracy, setAccuracy] = useState(null);
   const [isGoalAchieved, setIsGoalAchieved] = useState(false);
@@ -389,19 +402,21 @@ function VowelStudyPage() {
       const data = await response.json();
 
       if (data.accuracy !== undefined) {
-        setAccuracy((previousAccuracy) => {
-          const newAccuracy = data.accuracy;
+		const newAccuracy = data.accuracy;
 
-          return newAccuracy > (previousAccuracy || 0)
-            ? newAccuracy
-            : previousAccuracy;
-        });
+		saveLipReportItem(data.report_item);
 
-        if (data.is_goal_achieved) {
-          setIsGoalAchieved(true);
-          clearInterval(intervalRef.current);
-        }
-      }
+		setAccuracy((previousAccuracy) => {
+			return newAccuracy > (previousAccuracy || 0)
+			? newAccuracy
+			: previousAccuracy;
+		});
+
+		if (data.is_goal_achieved) {
+			setIsGoalAchieved(true);
+			clearInterval(intervalRef.current);
+		}
+	}
     } catch (error) {
       console.error("분석 요청 실패:", error);
     }
@@ -493,32 +508,117 @@ function VowelStudyPage() {
     }
   }
 
+  // 입모양 리포트를 위한 로컬 스토리지 저장용(초반 3개, 후반 3개만 저장)
+  const saveLipReportItem = (reportItem) => {
+  if (!reportItem) return;
+
+  const prevReport = JSON.parse(localStorage.getItem("lip_report") || "null");
+
+  const earlyAttempts = prevReport?.early_attempts || [];
+  const recentAttempts = prevReport?.recent_attempts || [];
+  const totalCount = prevReport?.total_count || 0;
+
+  const nextAttempt = totalCount + 1;
+
+  const nextItem = {
+    ...reportItem,
+    attempt: nextAttempt,
+  };
+
+  const nextEarlyAttempts =
+    earlyAttempts.length < 3
+      ? [...earlyAttempts, nextItem]
+      : earlyAttempts;
+
+  const nextRecentAttempts = [...recentAttempts, nextItem].slice(-3);
+
+  const nextReport = {
+    total_count: nextAttempt,
+    early_attempts: nextEarlyAttempts,
+    recent_attempts: nextRecentAttempts,
+  };
+
+  localStorage.setItem("lip_report", JSON.stringify(nextReport));
+};
+
+// 2단계 발음 리포트를 위한 로컬 스토리지 저장용(초반 5개, 후반 5개만 저장)
+const saveSpeechReportItem = (reportItem, nextAttempt) => {
+  if (!reportItem) return;
+
+  const prevReport = JSON.parse(localStorage.getItem("speech_report") || "null");
+
+  const earlyAttempts = prevReport?.early_attempts || [];
+  const recentAttempts = prevReport?.recent_attempts || [];
+
+  const nextItem = {
+    ...reportItem,
+    attempt: nextAttempt,
+  };
+
+  const nextEarlyAttempts =
+    earlyAttempts.length < 5
+      ? [...earlyAttempts, nextItem]
+      : earlyAttempts;
+
+  const nextRecentAttempts = [...recentAttempts, nextItem].slice(-5);
+
+  const nextReport = {
+    total_count: nextAttempt,
+    early_attempts: nextEarlyAttempts,
+    recent_attempts: nextRecentAttempts,
+  };
+
+  localStorage.setItem("speech_report", JSON.stringify(nextReport));
+};
+
   async function sendAudioToServer(audioBlob) {
-    setIsAnalyzing(true);
+  setIsAnalyzing(true);
 
-    try {
-      const formData = new FormData();
+  try {
+    const formData = new FormData();
 
-      formData.append("audio_file", audioBlob, "recording.webm");
-      formData.append("target_word", selectedVowel);
+    formData.append("audio_file", audioBlob, "recording.webm");
+    formData.append("target_word", selectedVowel);
 
-      const response = await fetch(`${API_BASE}/api/stt/analyze`, {
-        method: "POST",
-        body: formData,
-      });
+    const response = await fetch(`${API_BASE}/feedback/realtime`, {
+      method: "POST",
+      body: formData,
+    });
 
-      if (!response.ok) {
-        throw new Error("서버 오류");
-      }
-
-      const data = await response.json();
-      setSttResult(data);
-    } catch {
-      setSttError("음성 분석 중 오류가 발생했어요. 다시 시도해주세요.");
-    } finally {
-      setIsAnalyzing(false);
+    if (!response.ok) {
+      throw new Error("서버 오류");
     }
+
+    const data = await response.json();
+
+    const reportItem = data.report_item;
+    const isPassed = reportItem?.is_goal_achieved === true;
+    const alreadyAchieved = isSpeechGoalAchieved;
+
+    setSttResult(data);
+
+    if (!alreadyAchieved) {
+      const currentAttempt = Number(localStorage.getItem("total_attempts") || 0);
+      const nextAttempt = currentAttempt + 1;
+
+      setAttempt(nextAttempt);
+
+      localStorage.setItem("total_attempts", String(nextAttempt));
+      localStorage.setItem("target_word", selectedVowel);
+
+      saveSpeechReportItem(reportItem, nextAttempt);
+    }
+
+    if (isPassed) {
+      setIsSpeechGoalAchieved(true);
+    }
+  } catch (error) {
+    console.error("realtime 분석 실패:", error);
+    setSttError("음성 분석 중 오류가 발생했어요. 다시 시도해주세요.");
+  } finally {
+    setIsAnalyzing(false);
   }
+}
 
   return (
     <MobileScreen className="vowel-study-page">
@@ -769,20 +869,30 @@ function VowelStudyPage() {
             )}
 
             {sttResult && !isAnalyzing && (
-              <div className="vs-feedback-box">
-                <p className="vs-feedback-tag">AI 피드백</p>
+				<div className="vs-feedback-box">
+					<p className="vs-feedback-tag">AI 피드백</p>
 
-                <p className="vs-feedback-main">
-                  {sttResult.is_correct
-                    ? "발음이 정확해요! 🎉"
-                    : `"${sttResult.recognized_text ?? ""}" 로 들렸어요`}
-                </p>
+					<p className="vs-feedback-main">
+					{sttResult.feedback?.main_feedback}
+					</p>
 
-                <p className="vs-feedback-sub">
-                  {extractFeedbackText(sttResult.feedback)}
-                </p>
-              </div>
-            )}
+					<p className="vs-feedback-sub">
+					{sttResult.feedback?.action_feedback}
+					</p>
+
+					{sttResult.feedback?.encouragement && (
+					<p className="vs-feedback-sub vs-encouragement">
+						{sttResult.feedback.encouragement}
+					</p>
+					)}
+
+					{sttResult.recognized_text && (
+					<p className="vs-feedback-sub vs-recognized-text">
+						인식된 소리: “{getDisplayRecognizedText(sttResult.recognized_text)}”
+					</p>
+					)}
+				</div>
+			)}
 
             {sttError && !isAnalyzing && (
               <div className="vs-feedback-box vs-feedback-error">
@@ -804,18 +914,31 @@ function VowelStudyPage() {
             )}
 
             <div className="vs-footer">
-              <button
-                type="button"
-                className={`vs-next-btn ${!sttResult ? "disabled" : ""}`}
-                onClick={() => sttResult && navigate("/study/complete")}
-              >
-                학습 완료하기 →
-              </button>
+				<button
+					type="button"
+					className={`vs-next-btn ${!isSpeechGoalAchieved ? "disabled" : ""}`}
+					onClick={() => {
+					if (!isSpeechGoalAchieved) return;
 
-              <p className="vs-footer-sub">
-                음성 분석을 마치면 학습이 완료돼요
-              </p>
-            </div>
+					navigate("/study/complete", {
+						state: {
+						target_word: selectedVowel,
+						total_attempts: attempt,
+						speech_report: JSON.parse(localStorage.getItem("speech_report") || "null"),
+						lip_report: JSON.parse(localStorage.getItem("lip_report") || "null"),
+						},
+					});
+					}}
+				>
+					{isSpeechGoalAchieved ? "학습 완료하기 →" : "목표 발음에 가까워지면 완료할 수 있어요"}
+				</button>
+
+				<p className="vs-footer-sub">
+					{isSpeechGoalAchieved
+					? "목표 모음에 가까워졌어요. 학습을 완료할 수 있어요"
+					: "목표 모음에 가까워질 때까지 한 번 더 연습해요"}
+				</p>
+			</div>
           </>
         )}
       </div>

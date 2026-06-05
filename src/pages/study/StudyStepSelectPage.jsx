@@ -33,6 +33,13 @@ const VOWEL_VIDEO_MAP = {
   "ㅢ": euFrontVideo,
 };
 
+const clearPracticeStorage = () => {
+	localStorage.removeItem("lip_report");
+	localStorage.removeItem("speech_report");
+	localStorage.removeItem("total_attempts");
+	localStorage.removeItem("target_word");
+};
+
 function StudyStepSelectPage() {
   const navigate = useNavigate();
 
@@ -57,9 +64,13 @@ function StudyStepSelectPage() {
   }
 
   function handleStartStudy() {
-    if (!selectedVowel) return;
-    navigate(`/study/vowel/${selectedVowel}`);
-  }
+  if (!selectedVowel) return;
+
+  clearPracticeStorage();
+  localStorage.setItem("target_word", selectedVowel);
+
+  navigate(`/study/vowel/${selectedVowel}`);
+}
 
   // 목표 모음 선택 화면
   if (currentView === "selectVowel") {
