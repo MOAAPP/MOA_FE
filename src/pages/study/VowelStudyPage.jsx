@@ -3,6 +3,14 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import MobileScreen from "../../components/layout/MobileScreen";
 import backIcon from "../../assets/images/study/icon-back.svg";
+
+import ahFrontVideo from "../../assets/videos/ah_front.mp4";
+import uhFrontVideo from "../../assets/videos/uh_front.mp4";
+import ohFrontVideo from "../../assets/videos/oh_front.mp4";
+import wooFrontVideo from "../../assets/videos/woo_front.mp4";
+import euFrontVideo from "../../assets/videos/eu_front.mp4";
+import iFrontVideo from "../../assets/videos/i_front.mp4";
+
 import "./VowelStudyPage.css";
 
 const API_BASE = "http://localhost:8001";
@@ -34,21 +42,21 @@ const MicIcon = () => (
 );
 
 const vowelVideoMap = {
-  "ㅏ": "ah_front",
-  "ㅓ": "uh_front",
-  "ㅗ": "oh_front",
-  "ㅜ": "woo_front",
-  "ㅡ": "eu_front",
-  "ㅣ": "i_front",
-  "ㅐ": "ah_front",
-  "ㅔ": "ah_front",
-  "ㅑ": "ah_front",
-  "ㅕ": "uh_front",
-  "ㅛ": "oh_front",
-  "ㅠ": "woo_front",
-  "ㅒ": "ah_front",
-  "ㅖ": "ah_front",
-  "ㅢ": "eu_front",
+  "ㅏ": ahFrontVideo,
+  "ㅓ": uhFrontVideo,
+  "ㅗ": ohFrontVideo,
+  "ㅜ": wooFrontVideo,
+  "ㅡ": euFrontVideo,
+  "ㅣ": iFrontVideo,
+  "ㅐ": ahFrontVideo,
+  "ㅔ": ahFrontVideo,
+  "ㅑ": ahFrontVideo,
+  "ㅕ": uhFrontVideo,
+  "ㅛ": ohFrontVideo,
+  "ㅠ": wooFrontVideo,
+  "ㅒ": ahFrontVideo,
+  "ㅖ": ahFrontVideo,
+  "ㅢ": euFrontVideo,
 };
 
 const VOWEL_GUIDES = {
@@ -167,7 +175,7 @@ function VowelStudyPage() {
   const hint = VOWEL_GUIDES[selectedVowel] || VOWEL_GUIDES["ㅏ"];
   const soundGuide =
     VOWEL_SOUND_GUIDES[selectedVowel] || VOWEL_SOUND_GUIDES["ㅏ"];
-  const videoSrc = vowelVideoMap[selectedVowel] || "ah_front";
+  const videoSrc = vowelVideoMap[selectedVowel] || ahFrontVideo;
 
   const [activeTab, setActiveTab] = useState(1);
   const [accuracy, setAccuracy] = useState(null);
@@ -214,8 +222,7 @@ function VowelStudyPage() {
         ctx.beginPath();
 
         for (let x = 0; x <= W; x += 1) {
-          const y =
-            H / 2 + Math.sin((x / W) * Math.PI * 6 + phase) * 4;
+          const y = H / 2 + Math.sin((x / W) * Math.PI * 6 + phase) * 4;
 
           if (x === 0) {
             ctx.moveTo(x, y);
@@ -358,13 +365,8 @@ function VowelStudyPage() {
       return;
     }
 
-    const {
-      lip_width,
-      lip_height,
-      lip_open,
-      face_scale,
-      eye_distance,
-    } = extractLipData(results.faceLandmarks);
+    const { lip_width, lip_height, lip_open, face_scale, eye_distance } =
+      extractLipData(results.faceLandmarks);
 
     try {
       const response = await fetch(`${API_BASE}/lip/analyze-lip`, {
@@ -568,7 +570,7 @@ function VowelStudyPage() {
               <div className="vs-guide-image-box">
                 <video
                   className="vs-guide-video"
-                  src={`/src/assets/videos/${videoSrc}.mp4`}
+                  src={videoSrc}
                   autoPlay
                   loop
                   muted
@@ -641,7 +643,7 @@ function VowelStudyPage() {
               <div className="vs-guide-image-box">
                 <video
                   className="vs-guide-video"
-                  src={`/src/assets/videos/${videoSrc}.mp4`}
+                  src={videoSrc}
                   autoPlay
                   loop
                   muted
@@ -817,7 +819,6 @@ function VowelStudyPage() {
           </>
         )}
       </div>
-
     </MobileScreen>
   );
 }
