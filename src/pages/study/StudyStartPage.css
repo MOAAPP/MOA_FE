@@ -1,14 +1,52 @@
 .study-page {
+	position: relative;
 	display: flex;
 	flex-direction: column;
-	background: var(--color-background-default);
+  
+	background:
+	  radial-gradient(circle at 12% 0%, rgba(179, 198, 255, 0.55) 0%, rgba(247, 249, 255, 0) 36%),
+	  radial-gradient(circle at 100% 28%, rgba(213, 223, 255, 0.7) 0%, rgba(247, 249, 255, 0) 34%),
+	  var(--blue-50);
+  
+	overflow: hidden;
+  }
+  
+  .study-bg-decoration {
+	position: absolute;
+	z-index: 0;
+  
+	border-radius: 999px;
+	pointer-events: none;
+  }
+  
+  .study-bg-decoration-1 {
+	top: 96px;
+	right: -60px;
+	width: 180px;
+	height: 180px;
+	background: rgba(213, 223, 255, 0.45);
+	filter: blur(2px);
+  }
+  
+  .study-bg-decoration-2 {
+	top: 460px;
+	left: -86px;
+	width: 210px;
+	height: 210px;
+	background: rgba(179, 198, 255, 0.28);
+	filter: blur(3px);
   }
   
   .study-scroll {
+	position: relative;
+	z-index: 1;
+  
 	flex: 1;
 	min-height: 0;
 	box-sizing: border-box;
-	padding: 27px 17px 24px;
+  
+	padding: 42px 17px 150px;
+  
 	overflow-y: auto;
 	scrollbar-width: none;
   }
@@ -19,113 +57,236 @@
   
   .study-header {
 	width: 100%;
+	margin-bottom: 28px;
+  }
+  
+  .study-eyebrow {
+	margin: 0 0 8px;
+  
+	color: var(--blue-500);
+	font-family: Pretendard, sans-serif;
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 18px;
+	letter-spacing: 0.2px;
   }
   
   .study-title {
-	margin: 0 0 26px;
-	color: var(--color-text-primary);
+	margin: 0;
+  
+	color: var(--gray-950);
 	font-family: Pretendard, sans-serif;
-	font-size: 30px;
-	font-weight: 700;
-	line-height: 40px;
-	letter-spacing: -0.32px;
+	font-size: 36px;
+	font-weight: 800;
+	line-height: 46px;
+	letter-spacing: -0.9px;
   }
   
+  /* 추천 카드 */
   .recommend-card {
+	position: relative;
+	z-index: 1;
+  
 	box-sizing: border-box;
 	width: 100%;
-	padding: 20px;
-	margin-bottom: 34px;
-	border-radius: 12px;
-	background: var(--blue-50);
-	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
+	margin-bottom: 36px;
+	padding: 22px 22px 24px;
+  
+	border: 1px solid rgba(213, 223, 255, 0.85);
+	border-radius: 24px;
+	background:
+	  linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 249, 255, 0.96) 100%);
+  
+	box-shadow:
+	  0 16px 36px rgba(39, 58, 115, 0.11),
+	  0 2px 8px rgba(39, 58, 115, 0.05);
+  
+	overflow: hidden;
+  }
+  
+  .recommend-card::after {
+	content: "";
+	position: absolute;
+	top: -48px;
+	right: -42px;
+  
+	width: 140px;
+	height: 140px;
+	border-radius: 999px;
+  
+	background: rgba(179, 198, 255, 0.3);
+  }
+  
+  .recommend-top {
+	position: relative;
+	z-index: 1;
+  
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+  
+	margin-bottom: 18px;
   }
   
   .recommend-badge {
-	display: inline-block;
-	margin-bottom: 8px;
-	padding: 4px 8px;
-	border-radius: 12px;
-	background: var(--blue-200);
-	color: var(--blue-800);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+  
+	padding: 7px 12px;
+  
+	border-radius: 999px;
+	background: var(--blue-100);
+  
+	color: var(--blue-700);
 	font-family: Pretendard, sans-serif;
-	font-size: 15px;
-	font-weight: 600;
-	line-height: 24px;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 20px;
 	letter-spacing: -0.32px;
+  }
+  
+  .recommend-small-label {
+	color: var(--blue-300);
+	font-family: Pretendard, sans-serif;
+	font-size: 12px;
+	font-weight: 800;
+	line-height: 18px;
+	letter-spacing: 0.6px;
   }
   
   .recommend-text {
-	margin: 0;
+	position: relative;
+	z-index: 1;
+  
+	margin: 0 0 8px;
+  
 	color: var(--blue-950);
 	font-family: Pretendard, sans-serif;
-	font-size: 22px;
-	font-weight: 600;
-	line-height: 32px;
-	letter-spacing: -0.32px;
+	font-size: 25px;
+	font-weight: 800;
+	line-height: 35px;
+	letter-spacing: -0.6px;
   }
   
   .recommend-sub {
-	margin: 0 0 20px;
+	position: relative;
+	z-index: 1;
+  
+	margin: 0 0 22px;
+  
 	color: var(--gray-600);
 	font-family: Pretendard, sans-serif;
 	font-size: 15px;
-	font-weight: 600;
+	font-weight: 500;
 	line-height: 24px;
 	letter-spacing: -0.32px;
   }
   
   .recommend-start-btn {
+	position: relative;
+	z-index: 1;
+  
 	display: flex;
 	align-items: center;
 	justify-content: center;
+  
 	width: 100%;
-	height: 50px;
+	height: 54px;
+  
 	border: none;
-	border-radius: 12px;
-	background: var(--color-primary-default);
+	border-radius: 16px;
+	background: linear-gradient(135deg, #5681ff 0%, #6f91ff 100%);
+  
 	color: var(--color-text-inverse);
 	font-family: Pretendard, sans-serif;
-	font-size: 20px;
-	font-weight: 600;
-	line-height: 30px;
+	font-size: 19px;
+	font-weight: 700;
+	line-height: 28px;
 	letter-spacing: -0.32px;
+  
 	cursor: pointer;
-	transition: opacity 0.15s ease;
+	box-shadow: 0 10px 20px rgba(86, 129, 255, 0.24);
+  
+	transition:
+	  transform 0.15s ease,
+	  opacity 0.15s ease;
   }
   
   .recommend-start-btn:active {
-	opacity: 0.85;
+	transform: scale(0.985);
+	opacity: 0.9;
   }
   
+  /* 퍼즐 섹션 */
   .puzzle-section {
 	width: 100%;
   }
   
+  .puzzle-section-header {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+  
+	margin-bottom: 16px;
+  }
+  
   .puzzle-section-title {
 	margin: 0;
-	color: var(--color-text-primary);
+  
+	color: var(--gray-950);
 	font-family: Pretendard, sans-serif;
-	font-size: 20px;
-	font-weight: 600;
-	line-height: 30px;
-	letter-spacing: -0.32px;
+	font-size: 22px;
+	font-weight: 800;
+	line-height: 32px;
+	letter-spacing: -0.5px;
   }
   
   .puzzle-section-desc {
-	margin: 0 0 20px;
-	color: var(--gray-700);
+	margin: 3px 0 0;
+  
+	color: var(--gray-600);
 	font-family: Pretendard, sans-serif;
-	font-size: 15px;
-	font-weight: 600;
-	line-height: 24px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 22px;
 	letter-spacing: -0.32px;
+  }
+  
+  .puzzle-selected-chip {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+  
+	padding: 6px 10px;
+  
+	border-radius: 999px;
+	background: var(--blue-100);
+  
+	color: var(--blue-600);
+	font-family: Pretendard, sans-serif;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 18px;
+	letter-spacing: -0.32px;
+  }
+  
+  .puzzle-card {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 12px;
+  
+	border-radius: 26px;
+	background: rgba(255, 255, 255, 0.74);
+	box-shadow:
+	  0 12px 28px rgba(39, 58, 115, 0.08),
+	  inset 0 0 0 1px rgba(255, 255, 255, 0.75);
   }
   
   .puzzle-board {
 	width: 100%;
 	margin: 0 auto;
-	padding: 2px;
+	padding: 0;
 	box-sizing: border-box;
   }
   
@@ -134,6 +295,7 @@
 	width: 100%;
 	height: auto;
 	overflow: visible;
+	filter: drop-shadow(0 10px 18px rgba(39, 58, 115, 0.08));
   }
   
   .puzzle-group {
@@ -141,13 +303,20 @@
 	outline: none;
 	transform-box: fill-box;
 	transform-origin: center;
+  
+	transition: transform 0.16s ease;
+  }
+  
+  .puzzle-group:active {
+	transform: scale(0.985);
   }
   
   .puzzle-shape {
-	fill: var(--blue-200);
+	fill: #d8e2ff;
 	stroke: #ffffff;
-	stroke-width: 2.4;
+	stroke-width: 2.8;
 	stroke-linejoin: round;
+  
 	transition:
 	  fill 0.18s ease,
 	  filter 0.18s ease,
@@ -155,62 +324,118 @@
   }
   
   .puzzle-group--selected .puzzle-shape {
-	fill: var(--blue-500);
-	filter: drop-shadow(0 4px 8px rgba(86, 129, 255, 0.28));
+	fill: #5681ff;
+	filter: drop-shadow(0 6px 12px rgba(86, 129, 255, 0.32));
   }
   
   .puzzle-group:focus-visible .puzzle-shape {
 	stroke: var(--blue-700);
-	stroke-width: 3;
+	stroke-width: 3.2;
   }
   
   .puzzle-label {
 	fill: var(--blue-900);
 	font-family: Pretendard, sans-serif;
-	font-size: 25px;
-	font-weight: 700;
+	font-size: 27px;
+	font-weight: 800;
 	letter-spacing: -0.32px;
+  
 	pointer-events: none;
 	user-select: none;
+  
 	transition: fill 0.18s ease;
   }
   
-  .puzzle-group--selected .puzzle-label {
+  .puzzle-description {
+	fill: rgba(39, 58, 115, 0.58);
+	font-family: Pretendard, sans-serif;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: -0.2px;
+  
+	pointer-events: none;
+	user-select: none;
+  
+	transition: fill 0.18s ease;
+  }
+  
+  .puzzle-group--selected .puzzle-label,
+  .puzzle-group--selected .puzzle-description {
 	fill: #ffffff;
   }
   
+  /* 시작 버튼 영역 */
   .study-action-area {
-	flex-shrink: 0;
-	padding: 0 17px 12px;
-	background: var(--color-background-default);
+	position: absolute;
+	left: 17px;
+	right: 17px;
+	bottom: 98px;
+	z-index: 20;
+  
+	box-sizing: border-box;
+  
+	opacity: 0;
+	transform: translateY(10px);
+	pointer-events: none;
+  
+	transition:
+	  opacity 0.2s ease,
+	  transform 0.2s ease;
+  }
+  
+  .study-action-area.show {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
   }
   
   .main-start-btn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+  
 	width: 100%;
-	height: 50px;
+	height: 52px;
 	padding: 0 10px;
+  
 	border: none;
-	border-radius: 12px;
-	background: var(--color-primary-default);
+	border-radius: 16px;
+	background: linear-gradient(135deg, #5681ff 0%, #6f91ff 100%);
+  
 	color: var(--blue-50);
 	font-family: Pretendard, sans-serif;
-	font-size: 20px;
-	font-weight: 600;
-	line-height: 30px;
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 28px;
 	letter-spacing: -0.32px;
+  
 	cursor: pointer;
-	transition: opacity 0.15s ease;
+	box-shadow: 0 10px 22px rgba(86, 129, 255, 0.24);
+  
+	transition:
+	  transform 0.15s ease,
+	  opacity 0.15s ease;
   }
   
   .main-start-btn:active {
-	opacity: 0.85;
+	transform: scale(0.985);
+	opacity: 0.9;
   }
   
+  .main-start-btn:disabled {
+	background: var(--blue-200);
+	color: var(--blue-400);
+	box-shadow: none;
+	cursor: default;
+  }
+
   .study-page .study-bottom-nav-bar,
   .study-page .bottom-nav-bar {
-	position: static;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+  
 	flex-shrink: 0;
+	z-index: 15;
   }
