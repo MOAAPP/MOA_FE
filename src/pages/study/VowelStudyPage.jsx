@@ -261,10 +261,15 @@ function VowelStudyPage() {
 			if (!res.ok) return;
 			const data = await res.json();
 			if (data.accuracy !== undefined) {
+				const newAccuracy = data.accuracy;
+
+				// 백엔드가 내려준 입모양 report_item 저장
+				saveLipReportItem(data.report_item);
+
 				setAccuracy(prev => {
-					const newAccuracy = data.accuracy;
 					return newAccuracy > (prev || 0) ? newAccuracy : prev;
 				});
+
 				if (data.is_goal_achieved) {
 					setIsGoalAchieved(true);
 					clearInterval(intervalRef.current);
@@ -336,25 +341,64 @@ function VowelStudyPage() {
 		}
 	};
 
-	// 리포트를 위한 로컬 스토리지 저장용
+	// 입모양 리포트를 위한 로컬 스토리지 저장용(초반 3개, 후반 3개만 저장)
+	const saveLipReportItem = (reportItem) => {
+		if (!reportItem) return;
+
+		const prevReport = JSON.parse(localStorage.getItem("lip_report") || "null");
+
+		const earlyAttempts = prevReport?.early_attempts || [];
+		const recentAttempts = prevReport?.recent_attempts || [];
+		const totalCount = prevReport?.total_count || 0;
+
+		const nextAttempt = totalCount + 1;
+
+		const nextItem = {
+			...reportItem,
+			attempt: nextAttempt,
+		};
+
+		const nextEarlyAttempts =
+			earlyAttempts.length < 3
+				? [...earlyAttempts, nextItem]
+				: earlyAttempts;
+
+		const nextRecentAttempts = [...recentAttempts, nextItem].slice(-3);
+
+		const nextReport = {
+			total_count: nextAttempt,
+			early_attempts: nextEarlyAttempts,
+			recent_attempts: nextRecentAttempts,
+		};
+
+		localStorage.setItem("lip_report", JSON.stringify(nextReport));
+	};
+
+	// 2단계 발음 리포트를 위한 로컬 스토리지 저장용(초반 5개, 후반 5개만 저장)
 	const saveSpeechReportItem = (reportItem, nextAttempt) => {
 	if (!reportItem) return;
 
 	const prevReport = JSON.parse(localStorage.getItem("speech_report") || "null");
 
-	const prevAttempts = prevReport?.all_attempts || [];
+	const earlyAttempts = prevReport?.early_attempts || [];
+	const recentAttempts = prevReport?.recent_attempts || [];
 
 	const nextItem = {
 		...reportItem,
 		attempt: nextAttempt,
 	};
 
-	const allAttempts = [...prevAttempts, nextItem];
+	const nextEarlyAttempts =
+		earlyAttempts.length < 5
+			? [...earlyAttempts, nextItem]
+			: earlyAttempts;
+
+	const nextRecentAttempts = [...recentAttempts, nextItem].slice(-3);
 
 	const nextReport = {
-		all_attempts: allAttempts,
-		early_attempts: allAttempts.slice(0, 3),
-		recent_attempts: allAttempts.slice(-3),
+		total_count: nextAttempt,
+		early_attempts: nextEarlyAttempts,
+		recent_attempts: nextRecentAttempts,
 	};
 
 	localStorage.setItem("speech_report", JSON.stringify(nextReport));
@@ -568,6 +612,12 @@ function VowelStudyPage() {
 								<p className="vs-feedback-sub">
 									{sttResult.feedback?.action_feedback}
 								</p>
+
+								{sttResult.feedback?.encouragement && (
+									<p className="vs-feedback-sub vs-encouragement">
+										{sttResult.feedback.encouragement}
+									</p>
+								)}
 
 								{sttResult.recognized_text && (
 									<p className="vs-feedback-sub vs-recognized-text">

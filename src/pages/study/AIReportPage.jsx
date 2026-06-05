@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import BottomNavBar from "../../components/layout/BottomNavBar";
 import "./AIReportPage.css";
 
-const API_BASE = "http://localhost:8001";
+const API_BASE = "http://localhost:8000";
 
 const ShareIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -115,28 +115,44 @@ function AIReportPage() {
     }
   };
 
+// mvp 기준 모음 형식으로
   const getDummyReport = () => ({
-    target_word: "ㅏ",
-    analysis_summary: {
-      speech_summary: {
-        recent_feedbacks: []
-      }
-    },
-    report: {
-      subtitle: "지난 연습보다 자음 정확도가 향상되었어요",
-      result_cards: [
-        { label: "가장 먼저 고칠 소리", value: "ㅅ · ㅈ" },
-        { label: "가장 잘한 부분", value: "모음 · 리듬" },
-        { label: "오류 원인", value: "혀 위치 · 공기 흐름" },
-        { label: "다음 추천", value: "취약 자음 연습" },
-      ],
-      sections: [
-        { title: "한눈에 보는 결과", content: "이번 결과는 모음과 리듬은 좋고, 자음 선명도는 더 올릴 수 있는 상태예요. 특히 ㅅ 발음에서 혀 위치와 공기 흐름을 조금만 조정하면 전체 발음이 더 또렷해질 수 있어요." },
-        { title: "왜 이런 결과가 나왔나요?", content: "혀끝 위치가 윗니 뒤쪽보다 조금 아래에 머물고, 공기 흐름이 좁게 모이지 않아 자음 선명도가 떨어졌어요." },
-        { title: "지금 무엇을 하면 좋을까요?", content: "전체를 다시 하기보다 ㅅ, ㅈ처럼 취약한 자음부터 짧게 반복 연습하면 더 빠르게 좋아질 수 있어요." },
+  target_word: "ㅏ",
+  analysis_summary: {
+    speech_summary: {
+      recent_feedbacks: [
+        "목표 모음에 가까워지는 흐름이 보여요.",
+        "소리를 낼 때 목소리 흐름도 함께 확인했어요.",
       ],
     },
-  });
+  },
+  report: {
+    subtitle: "최근 연습에서 목표 모음에 가까워졌어요",
+    result_cards: [
+      { label: "가장 먼저 고칠 소리", value: "목표 모음" },
+      { label: "가장 잘한 부분", value: "입모양 유지" },
+      { label: "오류 원인", value: "소리 흐름" },
+      { label: "다음 추천", value: "짧게 반복" },
+    ],
+    sections: [
+      {
+        title: "한눈에 보는 결과",
+        content:
+          "최근 연습에서는 목표 모음에 가까워지는 흐름이 보여요. 소리를 낼 때 입모양과 목소리 흐름을 함께 확인했어요.",
+      },
+      {
+        title: "왜 이런 결과가 나왔나요?",
+        content:
+          "목표 모음이 인식된 정도와 목소리 안정성을 함께 반영했어요. 소리가 길게 이어지거나 흔들리면 결과가 조금 달라질 수 있어요.",
+      },
+      {
+        title: "지금 무엇을 하면 좋을까요?",
+        content:
+          "입모양을 먼저 맞춘 뒤, 목표 소리를 한 번만 짧고 또렷하게 내보세요.",
+      },
+    ],
+  },
+});
 
   const isVisible = (key) => visibleSections.has(key);
   const allDone = doneStages.size >= STAGES.length && !isLoading && reportData !== null;
@@ -148,6 +164,9 @@ function AIReportPage() {
     if (fromApi.length > 0) return fromApi;
     return splitToItems(report?.sections?.[0]?.content ?? "");
   })();
+
+  const section0Content = report?.sections?.[0]?.content ?? "";
+  const checkItems = recentFeedbacks.slice(0, 2);
 
   const currentLabel = isLoading
     ? "결과 화면을 준비하고 있어요"
@@ -221,14 +240,30 @@ function AIReportPage() {
         {report && (
           <div className={`ar-result-section ar-pop ${isVisible("result") ? "ar-pop-in" : ""}`}>
             <p className="ar-result-label">RESULT</p>
-            <p className="ar-result-subtitle">{report.subtitle}</p>
+            <p className="ar-result-subtitle">
+              최근 연습 결과를 바탕으로 정리했어요
+            </p>
+
             <div className="ar-cards-grid">
-              {report.result_cards?.map((card, i) => (
-                <div key={i} className="ar-card">
-                  <p className="ar-card-label">{card.label}</p>
-                  <p className="ar-card-value">{card.value}</p>
-                </div>
-              ))}
+              <div className="ar-card">
+                <p className="ar-card-label">가장 먼저 확인할 부분</p>
+                <p className="ar-card-value">목표 모음</p>
+              </div>
+
+              <div className="ar-card">
+                <p className="ar-card-label">가장 잘한 부분</p>
+                <p className="ar-card-value">입모양 유지</p>
+              </div>
+
+              <div className="ar-card">
+                <p className="ar-card-label">함께 볼 부분</p>
+                <p className="ar-card-value">소리 흐름</p>
+              </div>
+
+              <div className="ar-card">
+                <p className="ar-card-label">다음 추천</p>
+                <p className="ar-card-value">짧게 반복</p>
+              </div>
             </div>
           </div>
         )}
@@ -239,9 +274,16 @@ function AIReportPage() {
 
             {/* 한눈에 보는 결과 */}
             <div className="ar-check-list-div">
-              <p className="ar-section-title">{report.sections[0].title}</p>  {/* ← 안으로 이동 */}
+              <p className="ar-section-title">{report.sections[0].title}</p>
+
+              <div className="ar-summary-box">
+                <p className="ar-section-content">
+                  {section0Content}
+                </p>
+              </div>
+
               <div className="ar-check-list">
-                {recentFeedbacks.map((fb, fi) => (
+                {checkItems.map((fb, fi) => (
                   <div key={fi} className="ar-check-item">
                     <CheckIcon />
                     <p className="ar-check-text">{fb}</p>

@@ -30,6 +30,13 @@ const vowelVideoMap = {
 	"ㅢ": "eu_front",
 };
 
+const clearPracticeStorage = () => {
+	localStorage.removeItem("lip_report");
+	localStorage.removeItem("speech_report");
+	localStorage.removeItem("total_attempts");
+	localStorage.removeItem("target_word");
+};
+
 function StudyStepSelectPage() {
 	const navigate = useNavigate();
 	const { category } = useParams();
@@ -237,7 +244,13 @@ function StudyStepSelectPage() {
 				<button className="btn-prev" onClick={() => setPage(2)}>이전</button>
 				<button
 					className="btn-next"
-					onClick={() => navigate(`/study/vowel/${selectedVowel}`)}
+					onClick={() => {
+						clearPracticeStorage();
+
+						localStorage.setItem("target_word", selectedVowel);
+
+						navigate(`/study/vowel/${selectedVowel}`);
+					}}
 				>
 					시작하기
 				</button>
