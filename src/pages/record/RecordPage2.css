@@ -14,7 +14,6 @@
   overflow-x: hidden;
 }
 
-/* 상단 기록 카드 */
 .record-calendar-card {
   width: 376.245px;
   height: 447px;
@@ -26,14 +25,12 @@
   overflow: hidden;
 }
 
-/* 카드 상단: 제목 + 월 이동 버튼 */
 .record-calendar-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
 }
 
-/* 2026년 5월 */
 .record-calendar-header h2 {
   margin: 0;
   color: #000;
@@ -46,7 +43,6 @@
   letter-spacing: -0.32px;
 }
 
-/* 오늘의 학습으로 퍼즐을 완성해보세요 */
 .record-calendar-header p {
   margin: 5px 0 0;
   color: #000;
@@ -58,14 +54,12 @@
   line-height: 16px;
 }
 
-/* 이전/다음 버튼 묶음 */
 .record-month-buttons {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-/* 화살표 버튼 */
 .record-month-buttons button {
   display: flex;
   width: 25px;
@@ -88,7 +82,6 @@
   object-fit: contain;
 }
 
-/* 요일 */
 .record-week-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -114,7 +107,6 @@
   line-height: 16px;
 }
 
-/* 달력/퍼즐 영역 */
 .record-calendar-area {
   width: calc(100% + 36px);
   height: 292px;
@@ -132,7 +124,6 @@
   height: 100%;
 }
 
-/* 하단 진행바 */
 .record-progress-row {
   display: flex;
   align-items: center;
@@ -177,7 +168,6 @@
   flex-shrink: 0;
 }
 
-/* 요약 카드 영역 */
 .record-summary-row {
   width: 376.245px;
   margin-top: 23px;
