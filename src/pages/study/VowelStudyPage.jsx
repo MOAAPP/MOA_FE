@@ -86,39 +86,97 @@ const VOWEL_SOUND_GUIDES = {
   "ㅣ": '입을 양옆으로 당긴 상태에서 "이~~~" 소리를 이어가요.',
 };
 
-function getFeedbackFromAccuracy(accuracy) {
-  if (accuracy === null) {
-    return {
-      text: "얼굴을 카메라에 맞춰주세요",
-      sub: "입술이 잘 보이도록 가운데에 맞춰보세요",
-    };
-  }
+function getFeedback(accuracy, lipData, vowel) {
+    if (accuracy === null || !lipData) {
+        return {
+            text: "얼굴을 카메라에 맞춰주세요",
+            sub: "입술이 잘 보이도록 가운데에 맞춰보세요",
+        };
+    }
 
-  if (accuracy >= 80) {
-    return {
-      text: "입 모양이 정확해요! 🎉",
-      sub: "이 상태를 유지하면서 연습해보세요",
-    };
-  }
+    const { open_ratio, width_ratio, ratio } = lipData;
 
-  if (accuracy >= 60) {
-    return {
-      text: "거의 다 왔어요!",
-      sub: "조금만 더 정확하게 맞춰보세요",
-    };
-  }
+    if (accuracy >= 80) {
+        return {
+            text: "입 모양이 정확해요! 🎉",
+            sub: "이 상태를 유지하면서 연습해보세요",
+        };
+    }
 
-  if (accuracy >= 40) {
-    return {
-      text: "입을 조금 더 벌려보세요",
-      sub: "혀는 편하게 두고 천천히 따라 해보세요",
-    };
-  }
+    // ━━ ㅏ ━━
+    if (vowel === "ㅏ") {
+        if (open_ratio < 0.45)
+            return { text: "입을 더 크게 벌려보세요", sub: "턱을 아래로 내려서 세로로 크게 벌리는 게 포인트예요" };
+        if (width_ratio < 0.38)
+            return { text: "입꼬리를 옆으로 당겨보세요", sub: "입을 양옆으로 조금 더 벌려야 'ㅏ' 모양이 돼요" };
+        if (width_ratio > 0.55)
+            return { text: "입을 조금 좁혀보세요", sub: "양옆보다 세로로 벌리는 게 더 중요해요" };
+        if (ratio > 2.5)
+            return { text: "입을 세로로 더 벌려보세요", sub: "가로보다 세로가 더 큰 모양이 'ㅏ'예요" };
+        return { text: "거의 다 왔어요!", sub: "입을 조금만 더 크게 벌려보세요" };
+    }
 
-  return {
-    text: "입 모양을 다시 확인해보세요",
-    sub: "가이드 영상을 참고하며 천천히 따라해보세요",
-  };
+    // ━━ ㅓ ━━
+    if (vowel === "ㅓ") {
+        if (open_ratio < 0.45)
+            return { text: "입을 더 벌려보세요", sub: "ㅏ보다 살짝 작게, 반쯤 벌리는 느낌으로요" };
+        if (width_ratio > 0.42)
+            return { text: "입을 조금 좁혀보세요", sub: "'ㅓ'는 'ㅏ'보다 입을 덜 벌리는 모양이에요" };
+        if (width_ratio < 0.28)
+            return { text: "입을 조금 더 벌려보세요", sub: "너무 오므리지 않아도 돼요" };
+        if (ratio > 2.2)
+            return { text: "입을 세로로 조금 더 벌려보세요", sub: "턱을 살짝 내리는 느낌으로 해보세요" };
+        return { text: "거의 다 왔어요!", sub: "입 모양을 유지하면서 조금만 더 조정해보세요" };
+    }
+
+    // ━━ ㅗ ━━
+    if (vowel === "ㅗ") {
+        if (width_ratio > 0.34)
+            return { text: "입술을 더 오므려보세요", sub: "입술을 앞으로 동그랗게 내미는 느낌으로요" };
+        if (open_ratio > 0.08)
+            return { text: "입을 살짝 더 다물어보세요", sub: "'ㅗ'는 입을 많이 벌리지 않아요" };
+        if (ratio < 10)
+            return { text: "입술을 더 모아보세요", sub: "입술 양옆을 가운데로 모으는 느낌으로요" };
+        return { text: "거의 다 왔어요!", sub: "입술을 좀 더 동그랗게 모아보세요" };
+    }
+
+    // ━━ ㅜ ━━
+    if (vowel === "ㅜ") {
+        if (width_ratio > 0.40)
+            return { text: "입술을 더 작게 오므려보세요", sub: "'ㅜ'는 입술을 최대한 작고 동그랗게 모아야 해요" };
+        if (width_ratio < 0.32)
+            return { text: "입술을 조금만 더 벌려보세요", sub: "너무 세게 오므리지 않아도 돼요" };
+        if (open_ratio > 0.08)
+            return { text: "입을 조금 더 다물어보세요", sub: "'ㅜ'는 입술이 거의 닿을 정도로 모아요" };
+        return { text: "거의 다 왔어요!", sub: "입술을 조금만 더 앞으로 내밀어보세요" };
+    }
+
+    // ━━ ㅡ ━━
+    if (vowel === "ㅡ") {
+        if (ratio < 2.5)
+            return { text: "입을 가로로 더 납작하게 벌려보세요", sub: "위아래는 좁고 양옆으로 넓은 모양이 'ㅡ'예요" };
+        if (open_ratio > 0.35)
+            return { text: "입을 조금 더 다물어보세요", sub: "'ㅡ'는 입을 너무 많이 벌리지 않아요" };
+        if (width_ratio < 0.40)
+            return { text: "입을 양옆으로 더 당겨보세요", sub: "입꼬리를 옆으로 당기는 느낌으로요" };
+        return { text: "거의 다 왔어요!", sub: "입을 가로로 조금만 더 벌려보세요" };
+    }
+
+    // ━━ ㅣ ━━
+    if (vowel === "ㅣ") {
+        if (width_ratio < 0.50)
+            return { text: "입꼬리를 더 당겨보세요", sub: "양쪽 입꼬리를 귀 쪽으로 당기는 느낌으로요" };
+        if (open_ratio > 0.25)
+            return { text: "입을 조금 더 다물어보세요", sub: "'ㅣ'는 입을 많이 벌리지 않아요" };
+        if (ratio < 4.0)
+            return { text: "입을 가로로 더 넓게 당겨보세요", sub: "세로는 좁고 가로는 넓은 모양이 'ㅣ'예요" };
+        return { text: "거의 다 왔어요!", sub: "입꼬리를 조금만 더 당겨보세요" };
+    }
+
+    return {
+        text: "입 모양을 다시 확인해보세요",
+        sub: "가이드 영상을 참고하며 천천히 따라해보세요",
+    };
 }
 
 const LM = {
@@ -192,6 +250,7 @@ function VowelStudyPage() {
 	
   const [activeTab, setActiveTab] = useState(1);
   const [accuracy, setAccuracy] = useState(null);
+  const [lipData, setLipData] = useState(null);
   const [isGoalAchieved, setIsGoalAchieved] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -208,7 +267,7 @@ function VowelStudyPage() {
   const analyserRef = useRef(null);
   const audioCtxRef = useRef(null);
 
-  const feedback = getFeedbackFromAccuracy(accuracy);
+  const feedback = getFeedback(accuracy, lipData, selectedVowel);
 
   const drawIdleWave = () => {
     cancelAnimationFrame(waveAnimRef.current);
@@ -402,9 +461,15 @@ function VowelStudyPage() {
       const data = await response.json();
 
       if (data.accuracy !== undefined) {
-		const newAccuracy = data.accuracy;
+        const newAccuracy = data.accuracy;
 
-		saveLipReportItem(data.report_item);
+        setLipData({
+            open_ratio: data.open_ratio,
+            width_ratio: data.lip_width,
+            ratio: data.ratio,
+        });
+
+        saveLipReportItem(data.report_item);
 
 		setAccuracy((previousAccuracy) => {
 			return newAccuracy > (previousAccuracy || 0)
