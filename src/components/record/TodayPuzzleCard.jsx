@@ -1,9 +1,13 @@
 import calendarIcon from "../../assets/images/record/ci_calendar.svg";
 import otherGuideImage from "../../assets/images/record/otherimg.png";
 import LearningRecordCard from "./LearningRecordCard";
+
+import { useNavigate } from "react-router-dom";
+
 import "./TodayPuzzleCard.css";
 
-function TodayPuzzleCard({ selectedPuzzle }) {
+function TodayPuzzleCard({ selectedPuzzle, onRestorePuzzle }) {
+  const navigate = useNavigate();
   const hasSelectedPuzzle = selectedPuzzle !== null;
 
   const today = new Date();
@@ -21,6 +25,7 @@ function TodayPuzzleCard({ selectedPuzzle }) {
   const isLearned = status === "learned";
   const isOther = status === "other";
   const isToday = status === "today";
+  const isRestored = selectedPuzzle?.restored === true;
 
   if (isOther) {
     return (
@@ -42,15 +47,35 @@ function TodayPuzzleCard({ selectedPuzzle }) {
     );
   }
 
+  if (isRestored) {
+  return (
+    <section className="today-puzzle-card is-other">
+      <div className="today-puzzle-other-content">
+        <div className="today-puzzle-other-text">
+          <h3>
+            놓친 퍼즐 조각을
+            <br />
+            다시 채웠어요
+          </h3>
+        </div>
+
+        <div className="today-puzzle-other-figure">
+          <img src={otherGuideImage} alt="" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
   if (isLearned) {
     const records = [
       {
         label: "모음 · ㅏ",
-        feedback: "입술 닫힘 강도를 한 번 더 맞춰보면 좋아요",
+        feedback: "입을 여는 정도가 좋아졌어요. 같은 모양으로 한 번 더 연습해요.",
       },
       {
         label: "모음 · ㅗ",
-        feedback: "입술 닫힘 강도를 한 번 더 맞춰보면 좋아요",
+        feedback: "입술을 둥글게 모으는 흐름이 좋아요. 천천히 유지해보세요.",
       },
     ];
 
@@ -106,13 +131,20 @@ function TodayPuzzleCard({ selectedPuzzle }) {
       </div>
 
       {!isLocked && (
-        <button type="button" className="today-puzzle-button">
-          {isMissed
-            ? "풍선 100개로 복구하기"
-            : isLearned
-            ? "기록 보기"
-            : "오늘 채우기"}
-        </button>
+        <button
+            type="button"
+            className="today-puzzle-button"
+            onClick={() => {
+              if (isMissed) {
+                onRestorePuzzle?.(selectedPuzzle);
+                return;
+              }
+
+              navigate("/study");
+            }}
+          >
+            {isMissed ? "풍선 100개로 복구하기" : "오늘 채우기"}
+          </button>
       )}
     </section>
   );
