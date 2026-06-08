@@ -20,7 +20,13 @@ import "./RecordPage2.css";
 const YEAR = 2026;
 const COLS = 7;
 
+const MIN_MONTH = 4;
+const MAX_MONTH = 7;
+
 const MONTH_DATA = {
+  4: {
+    puzzleImage: allPuzzle,
+  },
   5: {
     puzzleImage: allPuzzle,
   },
@@ -213,17 +219,19 @@ function makePuzzleCellPath(
 }
 
 function RecordPage() {
-  const learnedDaysByMonth = {
+  const [learnedDaysByMonth, setLearnedDaysByMonth] = useState({
+    4: [
+      1, 2, 6, 7, 8, 9, 10,
+      11, 12, 18,
+      19, 20, 24, 25,
+    ],
     5: [
       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
       20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
     ],
-    6: [],
-    7: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-      20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    ],
-  };
+    6: [1,3,8],
+    7: [],
+  });
 
   const [month, setMonth] = useState(6);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
@@ -246,7 +254,51 @@ function RecordPage() {
 
   const today = new Date();
 
-  const learnedDays = learnedDaysByMonth[month] ?? [];
+  const hasTodayLearningRecord = () => {
+  const lipReport = JSON.parse(localStorage.getItem("lip_report") || "null");
+  const speechReport = JSON.parse(localStorage.getItem("speech_report") || "null");
+
+  return Boolean(lipReport || speechReport);
+  };
+
+  const baseLearnedDays = learnedDaysByMonth[month] ?? [];
+
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth() + 1;
+  const todayDate = today.getDate();
+
+  const isViewingTodayMonth = YEAR === todayYear && month === todayMonth;
+  const shouldAddToday = isViewingTodayMonth && hasTodayLearningRecord();
+
+  const learnedDays = shouldAddToday
+    ? [...new Set([...baseLearnedDays, todayDate])]
+    : baseLearnedDays;
+
+  //복구 함수(시연용)
+  const handleRestorePuzzle = (targetPuzzle) => {
+  if (!targetPuzzle?.month || !targetPuzzle?.day) return;
+
+  setLearnedDaysByMonth((prev) => {
+    const currentDays = prev[targetPuzzle.month] ?? [];
+
+    if (currentDays.includes(targetPuzzle.day)) {
+      return prev;
+    }
+
+    return {
+      ...prev,
+      [targetPuzzle.month]: [...currentDays, targetPuzzle.day].sort(
+        (a, b) => a - b
+      ),
+    };
+  });
+
+  setSelectedPuzzle({
+    ...targetPuzzle,
+    status: "learned",
+    restored: true,
+  });
+};
 
   const learnedCount = learnedDays.length;
   const totalCount = totalDays;
@@ -256,11 +308,11 @@ function RecordPage() {
 
   const isMonthCompleted = learnedCount === totalCount;
 
-  const todayYear = today.getFullYear();
-  const todayMonth = today.getMonth() + 1;
-  const todayDate = today.getDate();
+  // const todayYear = today.getFullYear();
+  // const todayMonth = today.getMonth() + 1;
+  // const todayDate = today.getDate();
 
-  const isViewingTodayMonth = YEAR === todayYear && month === todayMonth;
+  // const isViewingTodayMonth = YEAR === todayYear && month === todayMonth;
 
   const defaultPuzzle = isViewingTodayMonth
     ? {
@@ -275,12 +327,12 @@ function RecordPage() {
 
   const handlePrevMonth = () => {
     setSelectedPuzzle(null);
-    setMonth((prev) => (prev === 5 ? 7 : prev - 1));
+    setMonth((prev) => (prev === MIN_MONTH ? MAX_MONTH : prev - 1));
   };
 
   const handleNextMonth = () => {
     setSelectedPuzzle(null);
-    setMonth((prev) => (prev === 7 ? 5 : prev + 1));
+    setMonth((prev) => (prev === MAX_MONTH ? MIN_MONTH : prev + 1));
   };
 
   return (
@@ -627,7 +679,10 @@ function RecordPage() {
 
         {isMonthCompleted && <MonthCompleteBanner month={month} />}
 
-        <TodayPuzzleCard selectedPuzzle={activePuzzle} />
+        <TodayPuzzleCard
+          selectedPuzzle={activePuzzle}
+          onRestorePuzzle={handleRestorePuzzle}
+        />
       </div>
 
       <BottomNavBar activeNav="record" />
